@@ -1,5 +1,13 @@
-composer.phar
+# phpstorm project files
+.idea
+
+# OS cache
+Thumbs.db
+.DS_Store
+
+# composer vendor dir
 /vendor
-/examples/active_record/vendor
-/examples/codeigniter/framework_files
-/.idea
+
+# composer itself is not needed
+composer.lock
+composer.phar
