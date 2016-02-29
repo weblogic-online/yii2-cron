@@ -4,10 +4,10 @@ namespace app\controllers;
 use app\assets\TasksAsset;
 use app\models\Task;
 use app\models\TaskRun;
-use mult1mate\crontab\TaskInterface;
-use mult1mate\crontab\TaskLoader;
-use mult1mate\crontab\TaskRunner;
-use mult1mate\crontab\TaskManager;
+use vm\cron\TaskInterface;
+use vm\cron\TaskLoader;
+use vm\cron\TaskManager;
+use vm\cron\TaskRunner;
 use yii\web\Controller;
 
 /**
@@ -24,22 +24,21 @@ class TasksController extends Controller
     {
         parent::__construct($id, $module, $config);
         self::$tasks_controllers_folder = __DIR__ . '/../models/';
-        self::$tasks_namespace = 'app\\models\\';
+        self::$tasks_namespace          = 'app\\models\\';
         TasksAsset::register($this->view);
     }
 
     public function actionIndex()
     {
-        return $this->render('tasks_list', array(
-            'tasks' => Task::getList(),
+        return $this->render('tasks_list', [
+            'tasks'   => Task::getList(),
             'methods' => TaskLoader::getAllMethods(self::$tasks_controllers_folder, self::$tasks_namespace),
-        ));
+        ]);
     }
-
 
     public function actionExport()
     {
-        return $this->render('export', array());
+        return $this->render('export', []);
     }
 
     public function actionParseCrontab()
@@ -53,10 +52,10 @@ class TasksController extends Controller
     public function actionExportTasks()
     {
         if (isset($_POST['folder'])) {
-            $tasks = Task::getList();
-            $result = array();
+            $tasks  = Task::getList();
+            $result = [];
             foreach ($tasks as $t) {
-                $line = TaskManager::getTaskCrontabLine($t, $_POST['folder'], $_POST['php'], $_POST['file']);
+                $line     = TaskManager::getTaskCrontabLine($t, $_POST['folder'], $_POST['php'], $_POST['file']);
                 $result[] = nl2br($line);
             }
             echo json_encode($result);
@@ -66,14 +65,15 @@ class TasksController extends Controller
     public function actionTaskLog()
     {
         $task_id = isset($_GET['task_id']) ? $_GET['task_id'] : null;
-        $runs = TaskRun::getLast($task_id);
-        return $this->render('runs_list', array('runs' => $runs));
+        $runs    = TaskRun::getLast($task_id);
+
+        return $this->render('runs_list', ['runs' => $runs]);
     }
 
     public function actionRunTask()
     {
         if (isset($_POST['task_id'])) {
-            $tasks = !is_array($_POST['task_id']) ? array($_POST['task_id']) : $_POST['task_id'];
+            $tasks = !is_array($_POST['task_id']) ? [$_POST['task_id']] : $_POST['task_id'];
             foreach ($tasks as $t) {
                 $task = Task::findOne($t);
                 /**
@@ -93,10 +93,11 @@ class TasksController extends Controller
 
     public function actionGetDates()
     {
-        $time = $_POST['time'];
+        $time  = $_POST['time'];
         $dates = TaskRunner::getRunDates($time);
         if (empty($dates)) {
             echo 'Invalid expression';
+
             return;
         }
         echo '<ul>';
@@ -145,10 +146,10 @@ class TasksController extends Controller
             \Yii::$app->response->redirect('/?r=tasks/task-edit&task_id=' . $task->task_id);
         }
 
-        return $this->render('task_edit', array(
-            'task' => $task,
+        return $this->render('task_edit', [
+            'task'    => $task,
             'methods' => TaskLoader::getAllMethods(self::$tasks_controllers_folder, self::$tasks_namespace),
-        ));
+        ]);
     }
 
     public function actionTasksUpdate()
@@ -159,11 +160,11 @@ class TasksController extends Controller
                 /**
                  * @var Task $t
                  */
-                $action_status = array(
-                    'Enable' => TaskInterface::TASK_STATUS_ACTIVE,
+                $action_status = [
+                    'Enable'  => TaskInterface::TASK_STATUS_ACTIVE,
                     'Disable' => TaskInterface::TASK_STATUS_INACTIVE,
-                    'Delete' => TaskInterface::TASK_STATUS_DELETED,
-                );
+                    'Delete'  => TaskInterface::TASK_STATUS_DELETED,
+                ];
                 $t->setStatus($action_status[$_POST['action']]);
                 $t->save();
             }
@@ -173,12 +174,12 @@ class TasksController extends Controller
     public function actionTasksReport()
     {
         $date_begin = isset($_GET['date_begin']) ? $_GET['date_begin'] : date('Y-m-d', strtotime('-6 day'));
-        $date_end = isset($_GET['date_end']) ? $_GET['date_end'] : date('Y-m-d');
+        $date_end   = isset($_GET['date_end']) ? $_GET['date_end'] : date('Y-m-d');
 
-        return $this->render('report', array(
-            'report' => Task::getReport($date_begin, $date_end),
+        return $this->render('report', [
+            'report'     => Task::getReport($date_begin, $date_end),
             'date_begin' => $date_begin,
-            'date_end' => $date_end,
-        ));
+            'date_end'   => $date_end,
+        ]);
     }
 }

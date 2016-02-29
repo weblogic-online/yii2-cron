@@ -8,7 +8,7 @@
 namespace app\commands;
 
 use app\models\Task;
-use mult1mate\crontab\TaskRunner;
+use vm\cron\TaskRunner;
 use yii\console\Controller;
 
 class CronController extends Controller

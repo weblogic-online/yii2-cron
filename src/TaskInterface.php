@@ -1,23 +1,25 @@
 <?php
-namespace mult1mate\crontab;
+namespace vm\cron;
 
 /**
  * Interface TaskInterface
  * Common interface to handle tasks
- * @package mult1mate\crontab
- * @author mult1mate
+ * @package vm\cron
+ * @author  mult1mate
  * Date: 20.12.15
  * Time: 13:25
  */
 interface TaskInterface
 {
-    const TASK_STATUS_ACTIVE = 'active';
+    const TASK_STATUS_ACTIVE   = 'active';
     const TASK_STATUS_INACTIVE = 'inactive';
-    const TASK_STATUS_DELETED = 'deleted';
+    const TASK_STATUS_DELETED  = 'deleted';
 
     /**
      * Returns tasks with given id
+     *
      * @param int $task_id
+     *
      * @return TaskInterface
      */
     public static function taskGet($task_id);
@@ -27,6 +29,12 @@ interface TaskInterface
      * @return array
      */
     public static function getAll();
+
+    /**
+     * Creates new task object and returns it
+     * @return TaskInterface
+     */
+    public static function createNew();
 
     /**
      * Deletes the task
@@ -39,12 +47,6 @@ interface TaskInterface
      * @return mixed
      */
     public function taskSave();
-
-    /**
-     * Creates new task object and returns it
-     * @return TaskInterface
-     */
-    public static function createNew();
 
     /**
      * Creates new task run object for current task and returns it

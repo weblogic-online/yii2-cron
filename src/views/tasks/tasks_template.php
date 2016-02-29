@@ -5,13 +5,13 @@
  * Time: 0:29
  * @var $content
  */
-$menu = array(
-    'index' => 'Tasks list',
-    'task-edit' => 'Add new/edit task',
-    'task-log' => 'Logs',
-    'export' => 'Import/Export',
+$menu = [
+    'index'        => 'Tasks list',
+    'task-edit'    => 'Add new/edit task',
+    'task-log'     => 'Logs',
+    'export'       => 'Import/Export',
     'tasks-report' => 'Report',
-);
+];
 ?>
 <script src="manager_actions.js"></script>
 <div class="col-lg-10">

@@ -1,9 +1,9 @@
 <?php
-namespace mult1mate\crontab_tests;
+namespace vm\cron_tests;
 
-use mult1mate\crontab\TaskInterface;
-use mult1mate\crontab\TaskLoader;
-use mult1mate\crontab\TaskRunner;
+use vm\cron\TaskInterface;
+use vm\cron\TaskLoader;
+use vm\cron\TaskRunner;
 
 /**
  * @author mult1mate
@@ -15,10 +15,10 @@ class TaskRunnerTest extends \PHPUnit_Framework_TestCase
     public function testCheckAndRunTasks()
     {
         $task_inactive = TaskMock::createNew();
-        $task = TaskMock::createNew();
+        $task          = TaskMock::createNew();
         $task->setStatus(TaskInterface::TASK_STATUS_ACTIVE);
         $task->setTime('* * * * *');
-        TaskRunner::checkAndRunTasks(array($task, $task_inactive));
+        TaskRunner::checkAndRunTasks([$task, $task_inactive]);
     }
 
     public function testGetRunDates()
@@ -37,10 +37,10 @@ class TaskRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testParseAndRunCommand()
     {
-        $result = TaskRunner::parseAndRunCommand('mult1mate\crontab_tests\ActionMock::returnResult()');
+        $result = TaskRunner::parseAndRunCommand('vm\cron_tests\ActionMock::returnResult()');
         $this->assertTrue($result);
 
-        $result = TaskRunner::parseAndRunCommand('mult1mate\crontab_tests\ActionMock::wrongMethod()');
+        $result = TaskRunner::parseAndRunCommand('vm\cron_tests\ActionMock::wrongMethod()');
         $this->assertFalse($result);
 
         TaskLoader::setClassFolder(__DIR__ . '/runner_mocks');

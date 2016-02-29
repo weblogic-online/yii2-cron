@@ -30,7 +30,7 @@ $this->title = 'Task Manager - Task list';
         /**
          * @var \app\models\Task $t
          */
-        $status_class = (\mult1mate\crontab\TaskInterface::TASK_STATUS_ACTIVE == $t->status) ? '' : 'text-danger';
+        $status_class = (\vm\cron\TaskInterface::TASK_STATUS_ACTIVE == $t->status) ? '' : 'text-danger';
         ?>
         <tr>
             <td>

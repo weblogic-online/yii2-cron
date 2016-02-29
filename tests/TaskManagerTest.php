@@ -1,8 +1,8 @@
 <?php
-namespace mult1mate\crontab_tests;
+namespace vm\cron_tests;
 
-use mult1mate\crontab\TaskInterface;
-use mult1mate\crontab\TaskManager;
+use vm\cron\TaskInterface;
+use vm\cron\TaskManager;
 
 /**
  * @author mult1mate
@@ -13,13 +13,13 @@ class TaskManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testEditTask()
     {
-        $task = TaskMock::createNew();
+        $task    = TaskMock::createNew();
         $command = 'ActionMock::method()';
-        $task = TaskManager::editTask($task, '* * * * *', $command, TaskInterface::TASK_STATUS_ACTIVE, 'comment');
+        $task    = TaskManager::editTask($task, '* * * * *', $command, TaskInterface::TASK_STATUS_ACTIVE, 'comment');
         $this->assertEquals($command, $task->getCommand());
 
         $command = 'wrong_command';
-        $task = TaskManager::editTask($task, '* * * * *', $command, TaskInterface::TASK_STATUS_ACTIVE, 'comment');
+        $task    = TaskManager::editTask($task, '* * * * *', $command, TaskInterface::TASK_STATUS_ACTIVE, 'comment');
         $this->assertNotEquals($command, $task->getCommand());
     }
 

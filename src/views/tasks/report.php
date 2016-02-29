@@ -5,7 +5,7 @@
  * Time: 18:21
  * @var string $date_begin
  * @var string $date_end
- * @var array $report
+ * @var array  $report
  */
 echo $this->render('tasks_template');
 $this->title = 'Task Manager - Report';

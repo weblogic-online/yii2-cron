@@ -1,7 +1,7 @@
 <?php
-namespace mult1mate\crontab_tests;
+namespace vm\cron_tests;
 
-use mult1mate\crontab\TaskRunInterface;
+use vm\cron\TaskRunInterface;
 
 /**
  * @author mult1mate

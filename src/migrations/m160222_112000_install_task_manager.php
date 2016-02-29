@@ -6,8 +6,8 @@ class m160222_112000_install_task_manager extends Migration
 {
     public function up()
     {
-        $this->db->createCommand(\mult1mate\crontab\DbHelper::tableTasksSql())->execute();
-        $this->db->createCommand(\mult1mate\crontab\DbHelper::tableTaskRunsSql())->execute();
+        $this->db->createCommand(\vm\cron\DbHelper::tableTasksSql())->execute();
+        $this->db->createCommand(\vm\cron\DbHelper::tableTaskRunsSql())->execute();
     }
 
     public function down()

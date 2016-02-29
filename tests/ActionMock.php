@@ -5,8 +5,7 @@
  * Time: 14:39
  */
 
-namespace mult1mate\crontab_tests;
-
+namespace vm\cron_tests;
 
 class ActionMock
 {

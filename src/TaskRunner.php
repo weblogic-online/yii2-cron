@@ -1,13 +1,13 @@
 <?php
-namespace mult1mate\crontab;
+namespace vm\cron;
 
 use Cron\CronExpression;
 
 /**
  * Class TaskRunner
  * Runs tasks and handles time expression
- * @author mult1mate
- * @package mult1mate\crontab
+ * @author  mult1mate
+ * @package vm\cron
  * Date: 07.02.16
  * Time: 12:50
  */
@@ -15,6 +15,7 @@ class TaskRunner
 {
     /**
      * Runs active tasks if current time matches with time expression
+     *
      * @param array $tasks
      */
     public static function checkAndRunTasks($tasks)
@@ -37,25 +38,10 @@ class TaskRunner
     }
 
     /**
-     * Returns next run dates for time expression
-     * @param string $time
-     * @param int $count
-     * @return array
-     */
-    public static function getRunDates($time, $count = 10)
-    {
-        try {
-            $cron = CronExpression::factory($time);
-            $dates = $cron->getMultipleRunDates($count);
-        } catch (\Exception $e) {
-            return array();
-        }
-        return $dates;
-    }
-
-    /**
      * Runs task and returns output
+     *
      * @param TaskInterface $task
+     *
      * @return string
      */
     public static function runTask($task)
@@ -79,17 +65,20 @@ class TaskRunner
         $run->setOutput($output);
 
         $time_end = microtime(true);
-        $time = round(($time_end - $time_begin), 2);
+        $time     = round(($time_end - $time_begin), 2);
         $run->setExecutionTime($time);
 
         $run->setStatus($run_final_status);
         $run->saveTaskRun();
+
         return $output;
     }
 
     /**
      * Parses given command, creates new class object and calls its method via call_user_func_array
+     *
      * @param string $command
+     *
      * @return mixed
      */
     public static function parseAndRunCommand($command)
@@ -105,10 +94,31 @@ class TaskRunner
                 throw new TaskManagerException('method ' . $method . ' not found in class ' . $class);
             }
 
-            return call_user_func_array(array($obj, $method), $args);
+            return call_user_func_array([$obj, $method], $args);
         } catch (\Exception $e) {
             echo 'Caught an exception: ' . get_class($e) . ': ' . PHP_EOL . $e->getMessage() . PHP_EOL;
+
             return false;
         }
+    }
+
+    /**
+     * Returns next run dates for time expression
+     *
+     * @param string $time
+     * @param int    $count
+     *
+     * @return array
+     */
+    public static function getRunDates($time, $count = 10)
+    {
+        try {
+            $cron  = CronExpression::factory($time);
+            $dates = $cron->getMultipleRunDates($count);
+        } catch (\Exception $e) {
+            return [];
+        }
+
+        return $dates;
     }
 }

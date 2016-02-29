@@ -1,11 +1,11 @@
 <?php
-namespace mult1mate\crontab;
+namespace vm\cron;
 
 /**
  * Class DbHelper
  * Contains common sql queries
- * @package mult1mate\crontab
- * @author mult1mate
+ * @package vm\cron
+ * @author  mult1mate
  * Date: 05.01.16
  * Time: 18:08
  */

@@ -2,15 +2,15 @@
 
 namespace app\models;
 
-use mult1mate\crontab\TaskInterface;
-use mult1mate\crontab\TaskRunInterface;
+use vm\cron\TaskInterface;
+use vm\cron\TaskRunInterface;
 use yii\db\ActiveRecord;
 
 /**
  * @author mult1mate
  * Date: 20.12.15
  * Time: 20:54
- * @property int $task_id
+ * @property int    $task_id
  * @property string $time
  * @property string $command
  * @property string $status
@@ -55,10 +55,11 @@ class Task extends ActiveRecord implements TaskInterface
         WHERE tr.ts BETWEEN :date_begin AND :date_end + INTERVAL 1 DAY
         GROUP BY command
         ORDER BY tr.task_id";
-        return \Yii::$app->db->createCommand($sql, array(
+
+        return \Yii::$app->db->createCommand($sql, [
             ':date_begin' => $date_begin,
-            ':date_end' => $date_end
-        ))->queryAll();
+            ':date_end'   => $date_end,
+        ])->queryAll();
     }
 
     /**

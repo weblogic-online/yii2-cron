@@ -1,7 +1,7 @@
 <?php
-namespace mult1mate\crontab_tests;
+namespace vm\cron_tests;
 
-use mult1mate\crontab\TaskInterface;
+use vm\cron\TaskInterface;
 
 /**
  * @author mult1mate
@@ -25,7 +25,7 @@ class TaskMock implements TaskInterface
 
     public static function getAll()
     {
-        return array();
+        return [];
     }
 
     public function taskDelete()
@@ -47,7 +47,7 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @return \mult1mate\crontab\TaskRunInterface
+     * @return \vm\cron\TaskRunInterface
      */
     public function createTaskRun()
     {

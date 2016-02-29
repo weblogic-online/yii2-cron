@@ -4,13 +4,13 @@
  * Date: 21.12.15
  * Time: 0:56
  * @var \app\models\Task $task
- * @var array $methods
+ * @var array            $methods
  */
 use yii\bootstrap\ActiveForm;
 
 echo $this->render('tasks_template');
 $this->title = 'Task Manager - Edit task';
-$form = ActiveForm::begin([]);
+$form        = ActiveForm::begin([]);
 ?>
     <div class="col-lg-6">
         <div class="form-group">
@@ -27,11 +27,11 @@ $form = ActiveForm::begin([]);
             </select>
         </div>
         <?= $form->field($task, 'command')->textInput(['placeholder' => 'Controller::method']) ?>
-        <?= $form->field($task, 'status')->dropDownList(array(
-            \mult1mate\crontab\TaskInterface::TASK_STATUS_ACTIVE => 'Active',
-            \mult1mate\crontab\TaskInterface::TASK_STATUS_INACTIVE => 'Inactive',
-            \mult1mate\crontab\TaskInterface::TASK_STATUS_DELETED => 'Deleted',
-        )) ?>
+        <?= $form->field($task, 'status')->dropDownList([
+            \vm\cron\TaskInterface::TASK_STATUS_ACTIVE   => 'Active',
+            \vm\cron\TaskInterface::TASK_STATUS_INACTIVE => 'Inactive',
+            \vm\cron\TaskInterface::TASK_STATUS_DELETED  => 'Deleted',
+        ]) ?>
         <?= $form->field($task, 'comment') ?>
 
         <button type="submit" class="btn btn-primary">Save</button>

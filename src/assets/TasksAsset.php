@@ -12,8 +12,8 @@ use yii\web\AssetBundle;
 class TasksAsset extends AssetBundle
 {
     public $basePath = '@webroot';
-    public $baseUrl = '@web';
-    public $js = [
+    public $baseUrl  = '@web';
+    public $js       = [
         'manager_actions.js',
     ];
 }
