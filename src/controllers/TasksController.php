@@ -1,9 +1,9 @@
 <?php
 namespace vm\cron\controllers;
 
-use app\assets\TasksAsset;
 use app\models\Task;
 use app\models\TaskRun;
+use vm\cron\assets\TasksAsset;
 use vm\cron\TaskInterface;
 use vm\cron\TaskLoader;
 use vm\cron\TaskManager;

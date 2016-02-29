@@ -5,7 +5,7 @@
  * Time: 16:40
  */
 
-namespace app\assets;
+namespace vm\cron\assets;
 
 use yii\web\AssetBundle;
 
