@@ -36,7 +36,7 @@
   },
   "autoload": {
     "psr-4": {
-      "vm\\cron\\": "src/",
+      "vm\\cron\\": "src/cron/",
       "vm\\cron_tests\\": "tests/"
     }
   }
