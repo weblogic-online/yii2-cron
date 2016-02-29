@@ -11,9 +11,9 @@ use yii\web\AssetBundle;
 
 class TasksAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl  = '@web';
-    public $js       = [
+    public $sourcePath = '@vendor/voodoo-mobile/yii2-cron/src/assets';
+
+    public $js = [
         'manager_actions.js',
     ];
 }

@@ -38,7 +38,7 @@ class TasksController extends Controller
 
     public function actionExport()
     {
-        return $this->render('export', []);
+        return $this->render('export');
     }
 
     public function actionParseCrontab()
