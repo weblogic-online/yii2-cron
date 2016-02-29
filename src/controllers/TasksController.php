@@ -1,5 +1,5 @@
 <?php
-namespace app\controllers;
+namespace vm\cron\controllers;
 
 use app\assets\TasksAsset;
 use app\models\Task;
