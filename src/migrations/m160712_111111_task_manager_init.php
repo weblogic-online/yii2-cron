@@ -18,7 +18,7 @@ class m160712_111111_task_manager_init extends Migration {
             'time' => $this->string(64)->notNull(),
             'command' => $this->string(256)->notNull(),
             'status' => $this->string(20)->notNull(),
-            'comment' => $this->string(256),
+            'comments' => $this->string(256),
             'ts' => $this->dateTime()->defaultValue('CURRENT_TIMESTAMP'),
             'ts_updated' => $this->dateTime()
         ]);

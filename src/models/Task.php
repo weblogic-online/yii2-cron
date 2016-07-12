@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $time
  * @property string $command
  * @property string $status
- * @property string $comment
+ * @property string $comments 'comment' is a reserved word in some DBMS, we use 'comments' so that escaping is not necessary
  * @property string $ts
  * @property string $ts_updated
  */
@@ -158,7 +158,7 @@ class Task extends ActiveRecord implements TaskInterface
      */
     public function getComment()
     {
-        return $this->comment;
+        return $this->comments;
     }
 
     /**
@@ -166,7 +166,7 @@ class Task extends ActiveRecord implements TaskInterface
      */
     public function setComment($comment)
     {
-        $this->comment = $comment;
+        $this->comments = $comment;
     }
 
     /**
