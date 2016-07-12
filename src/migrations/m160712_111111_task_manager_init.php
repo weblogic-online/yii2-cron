@@ -1,4 +1,5 @@
 <?php
+namespace vm\cron\migrations;
 
 use yii\db\Migration;
 

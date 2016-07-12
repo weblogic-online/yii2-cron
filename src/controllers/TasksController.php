@@ -1,13 +1,13 @@
 <?php
 namespace vm\cron\controllers;
 
-use app\models\Task;
-use app\models\TaskRun;
+use vm\cron\models\Task;
+use vm\cron\models\TaskRun;
 use vm\cron\assets\TasksAsset;
-use vm\cron\TaskInterface;
-use vm\cron\TaskLoader;
-use vm\cron\TaskManager;
-use vm\cron\TaskRunner;
+use vm\cron\components\TaskInterface;
+use vm\cron\components\TaskLoader;
+use vm\cron\components\TaskManager;
+use vm\cron\components\TaskRunner;
 use yii\web\Controller;
 
 /**

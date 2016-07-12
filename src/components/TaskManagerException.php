@@ -1,5 +1,5 @@
 <?php
-namespace vm\cron;
+namespace vm\cron\components;
 
 /**
  * Class TaskManagerException

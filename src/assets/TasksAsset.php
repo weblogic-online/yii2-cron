@@ -4,7 +4,6 @@
  * Date: 06.02.16
  * Time: 16:40
  */
-
 namespace vm\cron\assets;
 
 use yii\web\AssetBundle;

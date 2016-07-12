@@ -1,5 +1,5 @@
 <?php
-namespace app\models;
+namespace vm\cron\models;
 
 use vm\cron\TaskRunInterface;
 use yii\db\ActiveRecord;
