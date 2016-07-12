@@ -43,19 +43,26 @@ class TasksController extends Controller
 
     public function actionParseCrontab()
     {
-        if (isset($_POST['crontab'])) {
-            $result = TaskManager::parseCrontab($_POST['crontab'], new Task());
+        $crontab = \Yii::$app->request->post('crontab');
+        if ($crontab) {
+            $result = TaskManager::parseCrontab($crontab, new Task());
             echo json_encode($result);
         }
     }
 
     public function actionExportTasks()
     {
-        if (isset($_POST['folder'])) {
+        $folder = \Yii::$app->request->post('folder');
+        if ($folder) {
             $tasks  = Task::getList();
             $result = [];
             foreach ($tasks as $t) {
-                $line     = TaskManager::getTaskCrontabLine($t, $_POST['folder'], $_POST['php'], $_POST['file']);
+                $line = TaskManager::getTaskCrontabLine(
+                    $t,
+                    $folder,
+                    \Yii::$app->request->post('php'),
+                    \Yii::$app->request->post('file')
+                );
                 $result[] = nl2br($line);
             }
             echo json_encode($result);
@@ -64,7 +71,7 @@ class TasksController extends Controller
 
     public function actionTaskLog()
     {
-        $task_id = isset($_GET['task_id']) ? $_GET['task_id'] : null;
+        $task_id = \Yii::$app->request->get('task_id');
         $runs    = TaskRun::getLast($task_id);
 
         return $this->render('runs_list', ['runs' => $runs]);
@@ -72,20 +79,20 @@ class TasksController extends Controller
 
     public function actionRunTask()
     {
-        if (isset($_POST['task_id'])) {
-            $tasks = !is_array($_POST['task_id']) ? [$_POST['task_id']] : $_POST['task_id'];
+        $tasks = \Yii::$app->request->post('id');
+        if (!empty($tasks)) {
+            $tasks = !is_array($tasks) ? [$tasks] : $tasks;
             foreach ($tasks as $t) {
                 $task = Task::findOne($t);
                 /**
                  * @var Task $task
                  */
-
                 $output = TaskRunner::runTask($task);
                 echo($output . '<hr>');
             }
-        } elseif (isset($_POST['custom_task'])) {
-            $result = TaskRunner::parseAndRunCommand($_POST['custom_task']);
-            echo ($result) ? 'success' : 'failed';
+        } elseif (($custom_task = \Yii::$app->request->post('custom_task'))) {
+            $result = TaskRunner::parseAndRunCommand($custom_task);
+            echo $result ? 'success' : 'failed';
         } else {
             echo 'empty task id';
         }
@@ -93,7 +100,7 @@ class TasksController extends Controller
 
     public function actionGetDates()
     {
-        $time  = $_POST['time'];
+        $time  = \Yii::$app->request->post('time');
         $dates = TaskRunner::getRunDates($time);
         if (empty($dates)) {
             echo 'Invalid expression';
@@ -112,12 +119,12 @@ class TasksController extends Controller
 
     public function actionGetOutput()
     {
-        if (isset($_POST['task_run_id'])) {
-            $run = TaskRun::findOne($_POST['task_run_id']);
+        $task_run_id = \Yii::$app->request->post('task_run_id');
+        if ($task_run_id) {
+            $run = TaskRun::findOne($task_run_id);
             /**
              * @var TaskRun $run
              */
-
             echo htmlentities($run->getOutput());
         } else {
             echo 'empty task run id';
@@ -126,8 +133,9 @@ class TasksController extends Controller
 
     public function actionTaskEdit()
     {
-        if (isset($_GET['task_id'])) {
-            $task = Task::findOne($_GET['task_id']);
+        $task_id = \Yii::$app->request->get('task_id');
+        if ($task_id) {
+            $task = Task::findOne($task_id);
         } else {
             $task = new Task();
         }
@@ -143,7 +151,7 @@ class TasksController extends Controller
                 $post['Task']['status'],
                 $post['Task']['comment']
             );
-            \Yii::$app->response->redirect('/?r=tasks/task-edit&task_id=' . $task->task_id);
+            \Yii::$app->response->redirect(['/tasks/task-edit', 'task_id', $task->task_id]);
         }
 
         return $this->render('task_edit', [
@@ -154,8 +162,9 @@ class TasksController extends Controller
 
     public function actionTasksUpdate()
     {
-        if (isset($_POST['task_id'])) {
-            $tasks = Task::findAll($_POST['task_id']);
+        $task_id = \Yii::$app->request->post('task_id');
+        if ($task_id) {
+            $tasks = Task::findAll($task_id);
             foreach ($tasks as $t) {
                 /**
                  * @var Task $t
@@ -165,7 +174,7 @@ class TasksController extends Controller
                     'Disable' => TaskInterface::TASK_STATUS_INACTIVE,
                     'Delete'  => TaskInterface::TASK_STATUS_DELETED,
                 ];
-                $t->setStatus($action_status[$_POST['action']]);
+                $t->setStatus($action_status[\Yii::$app->request->post('action')]);
                 $t->save();
             }
         }
@@ -173,8 +182,8 @@ class TasksController extends Controller
 
     public function actionTasksReport()
     {
-        $date_begin = isset($_GET['date_begin']) ? $_GET['date_begin'] : date('Y-m-d', strtotime('-6 day'));
-        $date_end   = isset($_GET['date_end']) ? $_GET['date_end'] : date('Y-m-d');
+        $date_begin = \Yii::$app->request->get('date_begin', date('Y-m-d', strtotime('-6 day')));
+        $date_end   = \Yii::$app->request->get('date_end', date('Y-m-d'));
 
         return $this->render('report', [
             'report'     => Task::getReport($date_begin, $date_end),
