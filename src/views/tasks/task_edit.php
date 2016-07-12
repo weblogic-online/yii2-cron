@@ -3,10 +3,11 @@
  * @author mult1mate
  * Date: 21.12.15
  * Time: 0:56
- * @var \app\models\Task $task
- * @var array            $methods
+ * @var \vm\cron\models\Task $task
+ * @var array $methods
  */
 use yii\bootstrap\ActiveForm;
+use vm\cron\components\TaskInterface;
 
 echo $this->render('tasks_template');
 $this->title = 'Task Manager - Edit task';
@@ -28,9 +29,9 @@ $form        = ActiveForm::begin([]);
     </div>
     <?= $form->field($task, 'command')->textInput(['placeholder' => 'Controller::method']) ?>
     <?= $form->field($task, 'status')->dropDownList([
-        \vm\cron\TaskInterface::TASK_STATUS_ACTIVE   => 'Active',
-        \vm\cron\TaskInterface::TASK_STATUS_INACTIVE => 'Inactive',
-        \vm\cron\TaskInterface::TASK_STATUS_DELETED  => 'Deleted',
+        TaskInterface::TASK_STATUS_ACTIVE   => 'Active',
+        TaskInterface::TASK_STATUS_INACTIVE => 'Inactive',
+        TaskInterface::TASK_STATUS_DELETED  => 'Deleted',
     ]) ?>
     <?= $form->field($task, 'comment') ?>
 

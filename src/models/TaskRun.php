@@ -1,7 +1,7 @@
 <?php
 namespace vm\cron\models;
 
-use vm\cron\TaskRunInterface;
+use vm\cron\components\TaskRunInterface;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 

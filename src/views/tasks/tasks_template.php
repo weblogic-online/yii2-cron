@@ -8,11 +8,11 @@
 use yii\helpers\Html;
 
 $menu = [
-    '/index'        => 'Tasks list',
-    '/task-edit'    => 'Add new/edit task',
-    '/task-log'     => 'Logs',
-    '/export'       => 'Import/Export',
-    '/tasks-report' => 'Report',
+    'index'        => 'Tasks list',
+    'task-edit'    => 'Add new/edit task',
+    'task-log'     => 'Logs',
+    'export'       => 'Import/Export',
+    'tasks-report' => 'Report',
 ];
 ?>
 <script src="manager_actions.js"></script>
@@ -23,7 +23,7 @@ $menu = [
         <?php foreach ($menu as $m => $text):
             $class = (isset($_GET['m']) && ($_GET['m'] == $m)) ? 'active' : '';
             ?>
-            <li class="<?= $class ?>"><?= Html::a($text, $menu) ?></li>
+            <li class="<?= $class ?>"><?= Html::a($text, $m) ?></li>
         <?php endforeach; ?>
     </ul>
     <br>

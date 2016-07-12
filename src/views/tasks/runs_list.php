@@ -20,7 +20,7 @@ $this->title = 'Task Manager - Run list';
     </tr>
     <?php foreach ($runs as $r):
         /**
-         * @var \app\models\TaskRun $r
+         * @var \vm\cron\models\TaskRun $r
          */
         ?>
         <tr>

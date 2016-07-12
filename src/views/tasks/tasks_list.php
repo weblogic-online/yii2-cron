@@ -7,6 +7,7 @@
  * @var array $methods
  */
 use yii\helpers\Html;
+use vm\cron\components\TaskInterface;
 
 echo $this->render('tasks_template');
 $this->title = 'Task Manager - Task list';
@@ -30,9 +31,9 @@ $this->title = 'Task Manager - Task list';
     <?php
     foreach ($tasks as $t):
         /**
-         * @var \app\models\Task $t
+         * @var \vm\cron\models\Task $t
          */
-        $status_class = (\vm\cron\TaskInterface::TASK_STATUS_ACTIVE == $t->status) ? '' : 'text-danger';
+        $status_class = (TaskInterface::TASK_STATUS_ACTIVE == $t->status) ? '' : 'text-danger';
         ?>
         <tr>
             <td>
@@ -46,10 +47,10 @@ $this->title = 'Task Manager - Task list';
             <td><?= $t->ts ?></td>
             <td><?= $t->ts_updated ?></td>
             <td>
-                <?= Html::a('Edit', ['/tasks/task-edit', 'id' => $t->id]); ?>
+                <?= Html::a('Edit', ['/cron/tasks/task-edit', 'id' => $t->id]); ?>
             </td>
             <td>
-                <?= Html::a('Log', '/tasks/task-log'); ?>
+                <?= Html::a('Log', '/cron/tasks/task-log'); ?>
             </td>
             <td>
                 <?= Html::a('Run', '', ['id' => $t->id, 'class' => 'run_task']); ?>

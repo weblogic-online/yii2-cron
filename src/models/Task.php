@@ -2,8 +2,8 @@
 
 namespace vm\cron\models;
 
-use vm\cron\TaskInterface;
-use vm\cron\TaskRunInterface;
+use vm\cron\components\TaskInterface;
+use vm\cron\components\TaskRunInterface;
 use yii\db\ActiveRecord;
 
 /**

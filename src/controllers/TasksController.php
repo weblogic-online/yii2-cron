@@ -24,7 +24,7 @@ class TasksController extends Controller
     {
         parent::__construct($id, $module, $config);
         self::$tasks_controllers_folder = __DIR__ . '/../models/';
-        self::$tasks_namespace          = 'app\\models\\';
+        self::$tasks_namespace          = 'vm\\cron\\models\\';
         TasksAsset::register($this->view);
     }
 
