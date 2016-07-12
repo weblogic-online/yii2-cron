@@ -6,13 +6,15 @@
  * @var array $tasks
  * @var array $methods
  */
+use yii\helpers\Html;
+
 echo $this->render('tasks_template');
 $this->title = 'Task Manager - Task list';
 ?>
 <table class="table table-bordered">
     <tr>
         <th>
-            <input type="checkbox" id="select_all">
+            <input type="checkbox" id="select_all" title="select all">
         </th>
         <th>ID</th>
         <th>Time</th>
@@ -34,9 +36,9 @@ $this->title = 'Task Manager - Task list';
         ?>
         <tr>
             <td>
-                <input type="checkbox" value="<?= $t->task_id ?>" class="task_checkbox">
+                <input type="checkbox" value="<?= $t->id ?>" class="task_checkbox" title="select task">
             </td>
-            <td><?= $t->task_id ?></td>
+            <td><?= $t->id ?></td>
             <td><?= $t->time ?></td>
             <td><?= $t->command ?></td>
             <td class="<?= $status_class ?>"><?= $t->status ?></td>
@@ -44,13 +46,13 @@ $this->title = 'Task Manager - Task list';
             <td><?= $t->ts ?></td>
             <td><?= $t->ts_updated ?></td>
             <td>
-                <a href="?r=tasks/task-edit&task_id=<?= $t->task_id ?>">Edit</a>
+                <?= Html::a('Edit', ['/tasks/task-edit', 'id' => $t->id]); ?>
             </td>
             <td>
-                <a href="?r=tasks/task-log&task_id=<?= $t->task_id ?>">Log</a>
+                <?= Html::a('Log', '/tasks/task-log'); ?>
             </td>
             <td>
-                <a href="<?= $t->task_id ?>" class="run_task">Run</a>
+                <?= Html::a('Run', '', ['id' => $t->id, 'class' => 'run_task']); ?>
             </td>
         </tr>
     <?php endforeach; ?>

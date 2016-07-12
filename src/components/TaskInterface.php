@@ -57,7 +57,7 @@ interface TaskInterface
     /**
      * @return int
      */
-    public function getTaskId();
+    public function getId();
 
     /**
      * @return string

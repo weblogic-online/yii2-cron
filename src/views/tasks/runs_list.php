@@ -24,7 +24,7 @@ $this->title = 'Task Manager - Run list';
          */
         ?>
         <tr>
-            <td><?= $r['task_run_id'] ?></td>
+            <td><?= $r['id'] ?></td>
             <td><?= $r['task_id'] ?> </td>
             <td><?= $r['command'] ?></td>
             <td><?= $r['status'] ?></td>
@@ -32,7 +32,7 @@ $this->title = 'Task Manager - Run list';
             <td><?= $r['ts'] ?></td>
             <td>
                 <?php if (!empty($r['output'])): ?>
-                    <a href="<?= $r['task_run_id'] ?>" data-toggle="modal" data-target="#output_modal"
+                    <a href="<?= $r['id'] ?>" data-toggle="modal" data-target="#output_modal"
                        class="show_output">Show output</a>
                 <?php endif; ?>
             </td>

@@ -9,7 +9,7 @@ use yii\db\Query;
  * @author mult1mate
  * Date: 20.12.15
  * Time: 21:12
- * @property int    $task_run_id
+ * @property int    $id
  * @property int    $task_id
  * @property string $status
  * @property string $output
@@ -18,26 +18,37 @@ use yii\db\Query;
  */
 class TaskRun extends ActiveRecord implements TaskRunInterface
 {
+    /**
+     * @return string
+     */
     public static function tableName()
     {
-        return 'task_runs';
+        return '{{%task_runs}}';
     }
 
+    /**
+     * @param int $task_id
+     * @param int $count
+     * @return array
+     */
     public static function getLast($task_id = null, $count = 100)
     {
         $db = (new Query())
             ->select('task_runs.*, tasks.command')
             ->from(self::tableName())
-            ->join('LEFT JOIN', 'tasks', 'tasks.task_id = task_runs.task_id')
-            ->orderBy('task_runs.task_run_id desc')
+            ->join('LEFT JOIN', 'tasks', 'tasks.id = task_runs.task_id')
+            ->orderBy('task_runs.id desc')
             ->limit($count);
         if ($task_id) {
-            $db->where('task_runs.task_id=:task_id', [':task_id' => $task_id]);
+            $db->where('task_runs.task_id=:task_id', [':id' => $task_id]);
         }
 
         return $db->all();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function saveTaskRun()
     {
         return $this->save();
@@ -48,7 +59,7 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
      */
     public function getTaskRunId()
     {
-        return $this->task_run_id;
+        return $this->id;
     }
 
     /**
@@ -115,11 +126,17 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
         $this->ts = $ts;
     }
 
+    /**
+     * @return string
+     */
     public function getOutput()
     {
         return $this->output;
     }
 
+    /**
+     * @param string $output
+     */
     public function setOutput($output)
     {
         $this->output = $output;

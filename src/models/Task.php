@@ -10,7 +10,7 @@ use yii\db\ActiveRecord;
  * @author mult1mate
  * Date: 20.12.15
  * Time: 20:54
- * @property int    $task_id
+ * @property int    $id
  * @property string $time
  * @property string $command
  * @property string $status
@@ -20,38 +20,56 @@ use yii\db\ActiveRecord;
  */
 class Task extends ActiveRecord implements TaskInterface
 {
+    /**
+     * @return string
+     */
     public static function tableName()
     {
-        return 'tasks';
+        return '{{%tasks}}';
     }
 
+    /**
+     * @param int $task_id
+     * @return null|static
+     */
     public static function taskGet($task_id)
     {
         return self::findOne($task_id);
     }
 
+    /**
+     * List of all tasks
+     * @return array|ActiveRecord[]|TaskInterface[] the query results. If the query results in nothing, an empty array will be returned.
+     */
     public static function getList()
     {
-        return self::findBySql("SELECT * FROM `tasks`
-        WHERE `status` NOT IN('deleted')
-        ORDER BY status, task_id DESC")->all();
+        return self::find()->where(['not', ['status' => TaskInterface::TASK_STATUS_DELETED]])
+            ->orderBy('status, id')->all();
     }
 
+    /**
+     * @return static[]
+     */
     public static function getAll()
     {
-        return self::findAll([]);
+        return self::find()->all();
     }
 
+    /**
+     * @param string $date_begin
+     * @param string $date_end
+     * @return array
+     */
     public static function getReport($date_begin, $date_end)
     {
-        $sql = "SELECT t.command, t.task_id,
+        $sql = "SELECT t.command, t.id,
         SUM(CASE WHEN tr.status = 'started' THEN 1 ELSE 0 END) AS started,
         SUM(CASE WHEN tr.status = 'completed' THEN 1 ELSE 0 END) AS completed,
         SUM(CASE WHEN tr.status = 'error' THEN 1 ELSE 0 END) AS error,
         round(AVG(tr.execution_time),2) AS time_avg,
         count(*) AS runs
         FROM task_runs AS tr
-        LEFT JOIN tasks AS t ON t.task_id=tr.task_id
+        LEFT JOIN tasks t ON t.id = tr.task_id
         WHERE tr.ts BETWEEN :date_begin AND :date_end + INTERVAL 1 DAY
         GROUP BY command
         ORDER BY tr.task_id";
@@ -74,16 +92,25 @@ class Task extends ActiveRecord implements TaskInterface
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function taskDelete()
     {
         return $this->delete();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function taskSave()
     {
         return $this->save();
     }
 
+    /**
+     * @return Task
+     */
     public static function createNew()
     {
         return new self();
@@ -98,15 +125,15 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getTaskId()
+    public function getId()
     {
-        return $this->task_id;
+        return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTime()
     {
@@ -114,7 +141,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param mixed $time
+     * @param string $time
      */
     public function setTime($time)
     {
@@ -122,7 +149,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getStatus()
     {
@@ -130,7 +157,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param mixed $status
+     * @param string $status
      */
     public function setStatus($status)
     {
@@ -138,7 +165,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCommand()
     {
@@ -146,7 +173,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param mixed $command
+     * @param string $command
      */
     public function setCommand($command)
     {
@@ -154,7 +181,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getComment()
     {
@@ -162,7 +189,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param mixed $comment
+     * @param string $comment
      */
     public function setComment($comment)
     {
@@ -170,7 +197,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTs()
     {
@@ -178,7 +205,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param mixed $ts
+     * @param string $ts
      */
     public function setTs($ts)
     {
@@ -186,7 +213,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTsUpdated()
     {
@@ -194,7 +221,7 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param mixed $ts
+     * @param string $ts
      */
     public function setTsUpdated($ts)
     {

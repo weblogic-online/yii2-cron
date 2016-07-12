@@ -1,8 +1,8 @@
 window.onload = function () {
-    var controller_url = '/?r=tasks/';
+    var controller_url = '/tasks/';
     //tasks list page
     $('.run_task').click(function () {
-        run_task({task_id: $(this).attr('href')});
+        run_task({id: $(this).attr('id')});
         return false;
     });
     $('#select_all').change(function () {
@@ -42,8 +42,8 @@ window.onload = function () {
             $('#task_output_container').text('Running...');
             $.post(controller_url + 'run-task', data, function (data) {
                 $('#task_output_container').html(data);
-            }).fail(function () {
-                alert('Server error has occurred');
+            }).fail(function (xhr, textStatus, errorThrown) {
+                alert(xhr.responseText);
             });
         }
     }

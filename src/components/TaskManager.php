@@ -77,7 +77,7 @@ class TaskManager
      */
     public static function parseCommand($command)
     {
-        if (preg_match('/([\w\\\\]+)::(\w+)\((.*)\)/', $command, $match)) {
+        if (preg_match('/([@\w\\\\]+)::(\w+)\((.*)\)/', $command, $match)) {
             $params = explode(',', $match[3]);
             if ((1 == count($params)) && ('' == $params[0])) {
                 //prevents to pass an empty string

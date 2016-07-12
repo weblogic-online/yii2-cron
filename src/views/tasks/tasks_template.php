@@ -5,12 +5,14 @@
  * Time: 0:29
  * @var $content
  */
+use yii\helpers\Html;
+
 $menu = [
-    'index'        => 'Tasks list',
-    'task-edit'    => 'Add new/edit task',
-    'task-log'     => 'Logs',
-    'export'       => 'Import/Export',
-    'tasks-report' => 'Report',
+    '/index'        => 'Tasks list',
+    '/task-edit'    => 'Add new/edit task',
+    '/task-log'     => 'Logs',
+    '/export'       => 'Import/Export',
+    '/tasks-report' => 'Report',
 ];
 ?>
 <script src="manager_actions.js"></script>
@@ -21,9 +23,9 @@ $menu = [
         <?php foreach ($menu as $m => $text):
             $class = (isset($_GET['m']) && ($_GET['m'] == $m)) ? 'active' : '';
             ?>
-            <li class="<?= $class ?>"><a href="?r=tasks/<?= $m ?>"><?= $text ?></a></li>
+            <li class="<?= $class ?>"><?= Html::a($text, $menu) ?></li>
         <?php endforeach; ?>
     </ul>
     <br>
-    <?= $content ?>
+    <?= isset($content) ? $content : '' ?>
 </div>

@@ -31,7 +31,7 @@ $this->title = 'Task Manager - Import/Export';
         </div>
         <div class="form-group">
             <label class="control-label" for="folder">Path to folder</label>
-            <input type="text" class="form-control" name="folder" id="folder" value="/home/project/">
+            <input type="text" class="form-control" name="folder" id="folder" value="">
         </div>
         <div class="form-group">
             <label class="control-label" for="file">php file</label>
