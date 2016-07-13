@@ -1,7 +1,7 @@
 <?php
 namespace vm\cron_tests;
 
-use vm\cron\TaskRunInterface;
+use vm\cron\components\TaskRunInterface;
 
 /**
  * @author mult1mate
@@ -10,7 +10,7 @@ use vm\cron\TaskRunInterface;
  */
 class TaskRunMock implements TaskRunInterface
 {
-    private $task_run_id;
+    private $id;
     private $task_id;
     private $status;
     private $output;
@@ -25,9 +25,9 @@ class TaskRunMock implements TaskRunInterface
     /**
      * @return int
      */
-    public function getTaskRunId()
+    public function getId()
     {
-        return $this->task_run_id;
+        return $this->id;
     }
 
     /**
@@ -39,11 +39,11 @@ class TaskRunMock implements TaskRunInterface
     }
 
     /**
-     * @param int $task_id
+     * @param int $taskId
      */
-    public function setTaskId($task_id)
+    public function setTaskId($taskId)
     {
-        $this->task_id = $task_id;
+        $this->task_id = $taskId;
     }
 
     /**
@@ -71,11 +71,11 @@ class TaskRunMock implements TaskRunInterface
     }
 
     /**
-     * @param int $execution_time
+     * @param int $executionTime
      */
-    public function setExecutionTime($execution_time)
+    public function setExecutionTime($executionTime)
     {
-        $this->execution_time = $execution_time;
+        $this->execution_time = $executionTime;
     }
 
     /**

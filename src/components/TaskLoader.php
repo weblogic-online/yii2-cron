@@ -15,7 +15,7 @@ class TaskLoader
      * Contains array of directories from which TaskLoader will try to load classes
      * @var array
      */
-    protected static $class_folders = [];
+    protected static $classFolders = [];
 
     /**
      * Scan folders for classes and return all their public methods
@@ -29,10 +29,10 @@ class TaskLoader
     public static function getAllMethods($folder, $namespace = [])
     {
         self::setClassFolder($folder);
-        $namespaces_list = is_array($namespace) ? $namespace : [$namespace];
+        $namespacesList = is_array($namespace) ? $namespace : [$namespace];
         $methods         = [];
 
-        $controllers = self::getControllersList(self::$class_folders, $namespaces_list);
+        $controllers = self::getControllersList(self::$classFolders, $namespacesList);
         foreach ($controllers as $c) {
             if (!class_exists($c)) {
                 self::loadController($c);
@@ -52,19 +52,19 @@ class TaskLoader
      */
     public static function setClassFolder($folder)
     {
-        return self::$class_folders = is_array($folder) ? $folder : [$folder];
+        return self::$classFolders = is_array($folder) ? $folder : [$folder];
     }
 
     /**
      * Returns names of all php files in directories
      *
      * @param array $paths
-     * @param       $namespaces_list
+     * @param       $namespacesList
      *
      * @return array
      * @throws TaskManagerException
      */
-    protected static function getControllersList($paths, $namespaces_list)
+    protected static function getControllersList($paths, $namespacesList)
     {
         $controllers = [];
         foreach ($paths as $p_index => $p) {
@@ -74,7 +74,7 @@ class TaskLoader
             $files = scandir($p);
             foreach ($files as $f) {
                 if (preg_match('/^([A-Z]\w+)\.php$/', $f, $match)) {
-                    $namespace     = isset($namespaces_list[$p_index]) ? $namespaces_list[$p_index] : '';
+                    $namespace     = isset($namespacesList[$p_index]) ? $namespacesList[$p_index] : '';
                     $controllers[] = $namespace . $match[1];
                 }
             }
@@ -86,27 +86,26 @@ class TaskLoader
     /**
      * Looks for and loads required class via require_once
      *
-     * @param $class_name
-     *
+     * @param string $className
      * @return bool
      * @throws TaskManagerException
      */
-    public static function loadController($class_name)
+    public static function loadController($className)
     {
-        foreach (self::$class_folders as $f) {
+        foreach (self::$classFolders as $f) {
             $f        = rtrim($f, '/');
-            $filename = $f . '/' . $class_name . '.php';
+            $filename = $f . '/' . $className . '.php';
             if (file_exists($filename)) {
                 require_once $filename;
-                if (class_exists($class_name)) {
+                if (class_exists($className)) {
                     return true;
                 } else {
-                    throw new TaskManagerException('file found but class ' . $class_name . ' not loaded');
+                    throw new TaskManagerException('file found but class ' . $className . ' not loaded');
                 }
             }
         }
 
-        throw new TaskManagerException('class ' . $class_name . ' not found');
+        throw new TaskManagerException('class ' . $className . ' not found');
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 namespace vm\cron_tests;
 
-use vm\cron\TaskInterface;
+use vm\cron\components\TaskInterface;
 
 /**
  * @author mult1mate
@@ -10,15 +10,15 @@ use vm\cron\TaskInterface;
  */
 class TaskMock implements TaskInterface
 {
-    private $task_id;
+    private $id;
     private $time;
     private $command;
     private $status;
-    private $comment;
+    private $comments;
     private $timestamp;
     private $ts_updated;
 
-    public static function taskGet($task_id)
+    public static function taskGet($taskId)
     {
         return new self();
     }
@@ -47,16 +47,16 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @return \vm\cron\TaskRunInterface
+     * @return \vm\cron\components\TaskRunInterface
      */
     public function createTaskRun()
     {
         return new TaskRunMock();
     }
 
-    public function getTaskId()
+    public function getId()
     {
-        return $this->task_id;
+        return $this->id;
     }
 
     /**
@@ -112,7 +112,7 @@ class TaskMock implements TaskInterface
      */
     public function getComment()
     {
-        return $this->comment;
+        return $this->comments;
     }
 
     /**
@@ -120,7 +120,7 @@ class TaskMock implements TaskInterface
      */
     public function setComment($comment)
     {
-        $this->comment = $comment;
+        $this->comments = $comment;
     }
 
     /**
@@ -148,10 +148,10 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @param mixed $ts
+     * @param mixed $timestamp
      */
-    public function setTsUpdated($ts)
+    public function setTsUpdated($timestamp)
     {
-        $this->ts_updated = $ts;
+        $this->ts_updated = $timestamp;
     }
 }

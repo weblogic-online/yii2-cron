@@ -1,7 +1,7 @@
 <?php
 namespace vm\cron_tests;
 
-use vm\cron\TaskLoader;
+use vm\cron\components\TaskLoader;
 
 /**
  * @author mult1mate

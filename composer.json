@@ -1,6 +1,6 @@
 {
-  "name": "voodoo-mobile/yii2-cron",
-  "description": "Flexible cron tasks manager for MVC-type applications",
+  "name": "Rossmann-IT/yii2-cron",
+  "description": "Flexible cron tasks manager for the Yii2 Framework",
   "minimum-stability": "dev",
   "type": "yii2-module",
   "keywords": [
@@ -11,7 +11,7 @@
     "Yii2",
     "Yii 2"
   ],
-  "homepage": "https://github.com/voodoo-mobile/yii2-cron",
+  "homepage": "https://github.com/Rossmann-IT/yii2-cron",
   "license": "MIT",
   "authors": [
     {
@@ -23,10 +23,16 @@
       "email": "public@voodoo-mobile.com",
       "homepage": "https://voodoo.rocks",
       "role": "Developer"
+    },
+    {
+      "name": "Dirk Rossmann GmbH",
+      "email": "Entwicklung_CRM@rossmann.de",
+      "homepage": "https://www.rossmann.de",
+      "role": "Developer"
     }
   ],
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=5.6.0",
     "yiisoft/yii2": "^2.0.6",
     "yiisoft/yii2-bootstrap": "^2.0.5",
     "mtdowling/cron-expression": "^1.1"

@@ -27,11 +27,11 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
     }
 
     /**
-     * @param int $task_id
+     * @param int $taskId
      * @param int $count
      * @return array
      */
-    public static function getLast($task_id = null, $count = 100)
+    public static function getLast($taskId = null, $count = 100)
     {
         $db = (new Query())
             ->select('task_runs.*, tasks.command')
@@ -39,8 +39,8 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
             ->join('LEFT JOIN', 'tasks', 'tasks.id = task_runs.task_id')
             ->orderBy('task_runs.id desc')
             ->limit($count);
-        if ($task_id) {
-            $db->where('task_runs.task_id=:task_id', [':id' => $task_id]);
+        if ($taskId) {
+            $db->where('task_runs.task_id=:task_id', [':id' => $taskId]);
         }
 
         return $db->all();
@@ -57,7 +57,7 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
     /**
      * @return int
      */
-    public function getTaskRunId()
+    public function getId()
     {
         return $this->id;
     }
@@ -71,11 +71,11 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
     }
 
     /**
-     * @param int $task_id
+     * @param int $taskId
      */
-    public function setTaskId($task_id)
+    public function setTaskId($taskId)
     {
-        $this->task_id = $task_id;
+        $this->task_id = $taskId;
     }
 
     /**
@@ -103,11 +103,11 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
     }
 
     /**
-     * @param int $execution_time
+     * @param int $executionTime
      */
-    public function setExecutionTime($execution_time)
+    public function setExecutionTime($executionTime)
     {
-        $this->execution_time = $execution_time;
+        $this->execution_time = $executionTime;
     }
 
     /**
@@ -119,11 +119,11 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
     }
 
     /**
-     * @param string $ts
+     * @param string $timestamp
      */
-    public function setTs($ts)
+    public function setTs($timestamp)
     {
-        $this->ts = $ts;
+        $this->ts = $timestamp;
     }
 
     /**

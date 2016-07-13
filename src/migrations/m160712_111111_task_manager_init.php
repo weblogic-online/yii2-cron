@@ -29,7 +29,7 @@ class m160712_111111_taskmanager_init extends Migration {
             'status' =>$this->string(20)->notNull(),
             'execution_time' => $this->float()->notNull()->defaultValue(0.00),
             'ts' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-            'output' => $this->string(2000)
+            'output' => $this->string(20000)
         ]);
         $this->createIndex('ix_task_runs_task_id', 'task_runs', 'task_id', false);
         $this->addForeignKey('fk_task_runs_tasks_id', 'task_runs', 'task_id', 'tasks', 'id');

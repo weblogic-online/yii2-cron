@@ -17,14 +17,14 @@ use yii\web\Controller;
  */
 class TasksController extends Controller
 {
-    private static $tasks_controllers_folder;
-    private static $tasks_namespace;
+    private static $tasksControllersFolder;
+    private static $tasksNamespace;
 
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config);
-        self::$tasks_controllers_folder = __DIR__ . '/../models/';
-        self::$tasks_namespace          = 'vm\\cron\\models\\';
+        self::$tasksControllersFolder = __DIR__ . '/../models/';
+        self::$tasksNamespace         = 'vm\\cron\\models\\';
         TasksAsset::register($this->view);
     }
 
@@ -32,7 +32,7 @@ class TasksController extends Controller
     {
         return $this->render('tasks_list', [
             'tasks'   => Task::getList(),
-            'methods' => TaskLoader::getAllMethods(self::$tasks_controllers_folder, self::$tasks_namespace),
+            'methods' => TaskLoader::getAllMethods(self::$tasksControllersFolder, self::$tasksNamespace),
         ]);
     }
 
@@ -71,8 +71,8 @@ class TasksController extends Controller
 
     public function actionTaskLog()
     {
-        $task_id = \Yii::$app->request->get('task_id');
-        $runs    = TaskRun::getLast($task_id);
+        $taskId = \Yii::$app->request->get('task_id');
+        $runs    = TaskRun::getLast($taskId);
 
         return $this->render('runs_list', ['runs' => $runs]);
     }
@@ -133,9 +133,9 @@ class TasksController extends Controller
 
     public function actionTaskEdit()
     {
-        $task_id = \Yii::$app->request->get('task_id');
-        if ($task_id) {
-            $task = Task::findOne($task_id);
+        $taskId = \Yii::$app->request->get('task_id');
+        if ($taskId) {
+            $task = Task::findOne($taskId);
         } else {
             $task = new Task();
         }
@@ -156,15 +156,15 @@ class TasksController extends Controller
 
         return $this->render('task_edit', [
             'task'    => $task,
-            'methods' => TaskLoader::getAllMethods(self::$tasks_controllers_folder, self::$tasks_namespace),
+            'methods' => TaskLoader::getAllMethods(self::$tasksControllersFolder, self::$tasksNamespace),
         ]);
     }
 
     public function actionTasksUpdate()
     {
-        $task_id = \Yii::$app->request->post('task_id');
-        if ($task_id) {
-            $tasks = Task::findAll($task_id);
+        $taskId = \Yii::$app->request->post('task_id');
+        if ($taskId) {
+            $tasks = Task::findAll($taskId);
             foreach ($tasks as $t) {
                 /**
                  * @var Task $t
@@ -182,13 +182,13 @@ class TasksController extends Controller
 
     public function actionTasksReport()
     {
-        $date_begin = \Yii::$app->request->get('date_begin', date('Y-m-d', strtotime('-6 day')));
-        $date_end   = \Yii::$app->request->get('date_end', date('Y-m-d'));
+        $dateBegin = \Yii::$app->request->get('date_begin', date('Y-m-d', strtotime('-6 day')));
+        $dateEnd   = \Yii::$app->request->get('date_end', date('Y-m-d'));
 
         return $this->render('report', [
-            'report'     => Task::getReport($date_begin, $date_end),
-            'date_begin' => $date_begin,
-            'date_end'   => $date_end,
+            'report'     => Task::getReport($dateBegin, $dateEnd),
+            'dateBegin' => $dateBegin,
+            'dateEnd'   => $dateEnd,
         ]);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace vm\cron_tests;
 
-use vm\cron\DbHelper;
+use vm\cron\components\DbHelper;
 
 /**
  * @author mult1mate

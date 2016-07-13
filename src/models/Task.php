@@ -29,12 +29,12 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param int $task_id
+     * @param int $taskId
      * @return null|static
      */
-    public static function taskGet($task_id)
+    public static function taskGet($taskId)
     {
-        return self::findOne($task_id);
+        return self::findOne($taskId);
     }
 
     /**
@@ -56,11 +56,12 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param string $date_begin
-     * @param string $date_end
+     * Date arithmetic only valid for MySQL
+     * @param string $dateBegin
+     * @param string $dateEnd
      * @return array
      */
-    public static function getReport($date_begin, $date_end)
+    public static function getReport($dateBegin, $dateEnd)
     {
         $sql = "SELECT t.command, t.id,
         SUM(CASE WHEN tr.status = 'started' THEN 1 ELSE 0 END) AS started,
@@ -75,8 +76,8 @@ class Task extends ActiveRecord implements TaskInterface
         ORDER BY tr.task_id";
 
         return \Yii::$app->db->createCommand($sql, [
-            ':date_begin' => $date_begin,
-            ':date_end'   => $date_end,
+            ':date_begin' => $dateBegin,
+            ':date_end'   => $dateEnd,
         ])->queryAll();
     }
 
@@ -205,11 +206,11 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param string $ts
+     * @param string $timestamp
      */
-    public function setTs($ts)
+    public function setTs($timestamp)
     {
-        $this->ts = $ts;
+        $this->ts = $timestamp;
     }
 
     /**
@@ -221,10 +222,10 @@ class Task extends ActiveRecord implements TaskInterface
     }
 
     /**
-     * @param string $ts
+     * @param string $timestamp
      */
-    public function setTsUpdated($ts)
+    public function setTsUpdated($timestamp)
     {
-        $this->ts_updated = $ts;
+        $this->ts_updated = $timestamp;
     }
 }

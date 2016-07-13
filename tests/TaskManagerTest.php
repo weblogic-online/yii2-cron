@@ -1,8 +1,8 @@
 <?php
 namespace vm\cron_tests;
 
-use vm\cron\TaskInterface;
-use vm\cron\TaskManager;
+use vm\cron\components\TaskInterface;
+use vm\cron\components\TaskManager;
 
 /**
  * @author mult1mate

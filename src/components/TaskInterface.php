@@ -18,11 +18,11 @@ interface TaskInterface
     /**
      * Returns tasks with given id
      *
-     * @param int $task_id
+     * @param int $taskId
      *
      * @return TaskInterface
      */
-    public static function taskGet($task_id);
+    public static function taskGet($taskId);
 
     /**
      * Returns array of all tasks
@@ -105,9 +105,9 @@ interface TaskInterface
     public function getTs();
 
     /**
-     * @param string $ts
+     * @param string $timestamp
      */
-    public function setTs($ts);
+    public function setTs($timestamp);
 
     /**
      * @return string
@@ -115,7 +115,7 @@ interface TaskInterface
     public function getTsUpdated();
 
     /**
-     * @param string $ts
+     * @param string $timestamp
      */
-    public function setTsUpdated($ts);
+    public function setTsUpdated($timestamp);
 }

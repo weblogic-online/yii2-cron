@@ -98,11 +98,11 @@ class TaskManager
      * Parses each line of crontab content and creates new TaskInterface objects
      *
      * @param string        $cron
-     * @param TaskInterface $task_class
+     * @param TaskInterface $taskClass
      *
      * @return array
      */
-    public static function parseCrontab($cron, $task_class)
+    public static function parseCrontab($cron, $taskClass)
     {
         $cron_array = explode(PHP_EOL, $cron);
         $comment    = null;
@@ -122,7 +122,7 @@ class TaskManager
                     $result[] = $r;
                     continue;
                 }
-                $task = self::createTaskWithCrontabLine($task_class, $matches, $comment);
+                $task = self::createTaskWithCrontabLine($taskClass, $matches, $comment);
 
                 $r [1] = 'Saved';
                 $r [2] = $task;
@@ -144,15 +144,15 @@ class TaskManager
     /**
      * Creates new TaskInterface object from parsed crontab line
      *
-     * @param TaskInterface $task_class
+     * @param TaskInterface $taskClass
      * @param array         $matches
      * @param string        $comment
      *
      * @return TaskInterface
      */
-    private static function createTaskWithCrontabLine($task_class, $matches, $comment)
+    private static function createTaskWithCrontabLine($taskClass, $matches, $comment)
     {
-        $task = $task_class::createNew();
+        $task = $taskClass::createNew();
         $task->setTime(trim($matches[2]));
         $arguments = str_replace(' ', ',', trim($matches[5]));
         $command   = ucfirst($matches[3]) . '::' . $matches[4] . '(' . $arguments . ')';
@@ -175,11 +175,11 @@ class TaskManager
      * @param TaskInterface $task
      * @param string        $path
      * @param string        $php_bin
-     * @param string        $input_file
+     * @param string        $inputFile
      *
      * @return string
      */
-    public static function getTaskCrontabLine($task, $path, $php_bin, $input_file)
+    public static function getTaskCrontabLine($task, $path, $php_bin, $inputFile)
     {
         $str     = '';
         $comment = $task->getComment();
@@ -190,7 +190,7 @@ class TaskManager
             $str .= '#';
         }
         list($class, $method, $args) = self::parseCommand($task->getCommand());
-        $exec_cmd = $php_bin . ' ' . $input_file . ' ' . $class . ' ' . $method . ' ' . implode(' ', $args);
+        $exec_cmd = $php_bin . ' ' . $inputFile . ' ' . $class . ' ' . $method . ' ' . implode(' ', $args);
         $str .= $task->getTime() . ' cd ' . $path . '; ' . $exec_cmd . ' 2>&1 > /dev/null';
 
         return $str . PHP_EOL;

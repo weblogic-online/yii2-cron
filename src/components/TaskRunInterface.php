@@ -24,7 +24,7 @@ interface TaskRunInterface
     /**
      * @return int
      */
-    public function getTaskRunId();
+    public function getId();
 
     /**
      * @return int
@@ -32,9 +32,9 @@ interface TaskRunInterface
     public function getTaskId();
 
     /**
-     * @param int $task_id
+     * @param int $taskId
      */
-    public function setTaskId($task_id);
+    public function setTaskId($taskId);
 
     /**
      * @return string
@@ -52,9 +52,9 @@ interface TaskRunInterface
     public function getExecutionTime();
 
     /**
-     * @param string $execution_time
+     * @param string $executionTime
      */
-    public function setExecutionTime($execution_time);
+    public function setExecutionTime($executionTime);
 
     /**
      * @return string
@@ -62,9 +62,9 @@ interface TaskRunInterface
     public function getTs();
 
     /**
-     * @param string $ts
+     * @param string $timestamp
      */
-    public function setTs($ts);
+    public function setTs($timestamp);
 
     /**
      * @return string

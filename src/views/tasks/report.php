@@ -3,8 +3,8 @@
  * @author mult1mate
  * Date: 05.01.16
  * Time: 18:21
- * @var string $date_begin
- * @var string $date_end
+ * @var string $dateBegin
+ * @var string $dateEnd
  * @var array  $report
  */
 echo $this->render('tasks_template');
@@ -13,11 +13,11 @@ $this->title = 'Task Manager - Report';
 <form class="form-inline" action="">
     <div class="form-group">
         <label for="date_begin" class="control-label">Date begin</label>
-        <input type="date" value="<?= $date_begin ?>" name="date_begin" id="date_begin" class="form-control">
+        <input type="date" value="<?= $dateBegin ?>" name="date_begin" id="date_begin" class="form-control">
     </div>
     <div class="form-group">
         <label for="date_end" class="control-label">Date end</label>
-        <input type="date" value="<?= $date_end ?>" name="date_end" id="date_end" class="form-control">
+        <input type="date" value="<?= $dateEnd ?>" name="date_end" id="date_end" class="form-control">
     </div>
     <div class="form-group">
         <input type="hidden" value="tasksReport" name="r">
