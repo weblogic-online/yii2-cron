@@ -14,11 +14,11 @@ class TaskRunnerTest extends \PHPUnit_Framework_TestCase
 {
     public function testCheckAndRunTasks()
     {
-        $task_inactive = TaskMock::createNew();
+        $taskInactive  = TaskMock::createNew();
         $task          = TaskMock::createNew();
         $task->setStatus(TaskInterface::TASK_STATUS_ACTIVE);
         $task->setTime('* * * * *');
-        TaskRunner::checkAndRunTasks([$task, $task_inactive]);
+        TaskRunner::checkAndRunTasks([$task, $taskInactive]);
     }
 
     public function testGetRunDates()

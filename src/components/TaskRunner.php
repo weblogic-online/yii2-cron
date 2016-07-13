@@ -51,24 +51,24 @@ class TaskRunner
         $run->setTs(date('Y-m-d H:i:s'));
         $run->setStatus(TaskRunInterface::RUN_STATUS_STARTED);
         $run->saveTaskRun();
-        $run_final_status = TaskRunInterface::RUN_STATUS_COMPLETED;
+        $runFinalStatus = TaskRunInterface::RUN_STATUS_COMPLETED;
 
         ob_start();
-        $time_begin = microtime(true);
+        $timeBegin = microtime(true);
 
         $result = self::parseAndRunCommand($task->getCommand());
         if (!$result) {
-            $run_final_status = TaskRunInterface::RUN_STATUS_ERROR;
+            $runFinalStatus = TaskRunInterface::RUN_STATUS_ERROR;
         }
 
         $output = ob_get_clean();
         $run->setOutput($output);
 
-        $time_end = microtime(true);
-        $time     = round(($time_end - $time_begin), 2);
+        $timeEnd = microtime(true);
+        $time     = round(($timeEnd - $timeBegin), 2);
         $run->setExecutionTime($time);
 
-        $run->setStatus($run_final_status);
+        $run->setStatus($runFinalStatus);
         $run->saveTaskRun();
 
         return $output;

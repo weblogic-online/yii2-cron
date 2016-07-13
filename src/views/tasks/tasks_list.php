@@ -33,7 +33,7 @@ $this->title = 'Task Manager - Task list';
         /**
          * @var \vm\cron\models\Task $t
          */
-        $status_class = (TaskInterface::TASK_STATUS_ACTIVE == $t->status) ? '' : 'text-danger';
+        $statusClass = (TaskInterface::TASK_STATUS_ACTIVE == $t->status) ? '' : 'text-danger';
         ?>
         <tr>
             <td>
@@ -42,7 +42,7 @@ $this->title = 'Task Manager - Task list';
             <td><?= $t->id ?></td>
             <td><?= $t->time ?></td>
             <td><?= $t->command ?></td>
-            <td class="<?= $status_class ?>"><?= $t->status ?></td>
+            <td class="<?= $statusClass ?>"><?= $t->status ?></td>
             <td><?= $t->comment ?></td>
             <td><?= $t->ts ?></td>
             <td><?= $t->ts_updated ?></td>
@@ -78,10 +78,10 @@ $this->title = 'Task Manager - Task list';
         <label for="method">Methods</label>
         <select class="form-control" id="method">
             <option></option>
-            <?php foreach ($methods as $class => $class_methods): ?>
+            <?php foreach ($methods as $class => $classMethods): ?>
                 <optgroup label="<?= $class ?>">
-                    <?php foreach ($class_methods as $m): ?>
-                        <option value="<?= $class . '::' . $m . '()' ?>"><?= $m ?></option>
+                    <?php foreach ($classMethods as $method): ?>
+                        <option value="<?= $class . '::' . $method . '()' ?>"><?= $method ?></option>
                     <?php endforeach; ?>
                 </optgroup>
             <?php endforeach; ?>

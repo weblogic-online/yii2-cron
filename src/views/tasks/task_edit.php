@@ -18,10 +18,10 @@ $form        = ActiveForm::begin([]);
         <label for="method">Methods</label>
         <select class="form-control" id="method">
             <option></option>
-            <?php foreach ($methods as $class => $class_methods): ?>
+            <?php foreach ($methods as $class => $classMethods): ?>
                 <optgroup label="<?= $class ?>">
-                    <?php foreach ($class_methods as $m): ?>
-                        <option value="<?= $class . '::' . $m . '()' ?>"><?= $m ?></option>
+                    <?php foreach ($classMethods as $method): ?>
+                        <option value="<?= $class . '::' . $method . '()' ?>"><?= $method ?></option>
                     <?php endforeach; ?>
                 </optgroup>
             <?php endforeach; ?>

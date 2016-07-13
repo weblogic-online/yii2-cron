@@ -67,14 +67,14 @@ class TaskLoader
     protected static function getControllersList($paths, $namespacesList)
     {
         $controllers = [];
-        foreach ($paths as $p_index => $p) {
-            if (!file_exists($p)) {
-                throw new TaskManagerException('folder ' . $p . ' does not exist');
+        foreach ($paths as $pathIndex => $path) {
+            if (!file_exists($path)) {
+                throw new TaskManagerException('folder ' . $path . ' does not exist');
             }
-            $files = scandir($p);
-            foreach ($files as $f) {
-                if (preg_match('/^([A-Z]\w+)\.php$/', $f, $match)) {
-                    $namespace     = isset($namespacesList[$p_index]) ? $namespacesList[$p_index] : '';
+            $files = scandir($path);
+            foreach ($files as $file) {
+                if (preg_match('/^([A-Z]\w+)\.php$/', $file, $match)) {
+                    $namespace     = isset($namespacesList[$pathIndex]) ? $namespacesList[$pathIndex] : '';
                     $controllers[] = $namespace . $match[1];
                 }
             }
@@ -121,13 +121,13 @@ class TaskLoader
         if (!class_exists($class)) {
             throw new TaskManagerException('class ' . $class . ' not found');
         }
-        $class_methods = get_class_methods($class);
-        if ($parent_class = get_parent_class($class)) {
-            $parent_class_methods = get_class_methods($parent_class);
+        $classMethods = get_class_methods($class);
+        if ($parentClass = get_parent_class($class)) {
+            $parentClassMethods = get_class_methods($parentClass);
 
-            return array_diff($class_methods, $parent_class_methods);
+            return array_diff($classMethods, $parentClassMethods);
         }
 
-        return $class_methods;
+        return $classMethods;
     }
 }

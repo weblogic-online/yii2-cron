@@ -90,8 +90,8 @@ class TasksController extends Controller
                 $output = TaskRunner::runTask($task);
                 echo($output . '<hr>');
             }
-        } elseif (($custom_task = \Yii::$app->request->post('custom_task'))) {
-            $result = TaskRunner::parseAndRunCommand($custom_task);
+        } elseif (($customTask = \Yii::$app->request->post('custom_task'))) {
+            $result = TaskRunner::parseAndRunCommand($customTask);
             echo $result ? 'success' : 'failed';
         } else {
             echo 'empty task id';
@@ -119,9 +119,9 @@ class TasksController extends Controller
 
     public function actionGetOutput()
     {
-        $task_run_id = \Yii::$app->request->post('task_run_id');
-        if ($task_run_id) {
-            $run = TaskRun::findOne($task_run_id);
+        $taskRunId = \Yii::$app->request->post('task_run_id');
+        if ($taskRunId) {
+            $run = TaskRun::findOne($taskRunId);
             /**
              * @var TaskRun $run
              */
@@ -169,12 +169,12 @@ class TasksController extends Controller
                 /**
                  * @var Task $t
                  */
-                $action_status = [
+                $actionStatus = [
                     'Enable'  => TaskInterface::TASK_STATUS_ACTIVE,
                     'Disable' => TaskInterface::TASK_STATUS_INACTIVE,
                     'Delete'  => TaskInterface::TASK_STATUS_DELETED,
                 ];
-                $t->setStatus($action_status[\Yii::$app->request->post('action')]);
+                $t->setStatus($actionStatus[\Yii::$app->request->post('action')]);
                 $t->save();
             }
         }

@@ -29,11 +29,11 @@ class TaskManager
     public static function editTask($task, $time, $command, $status = TaskInterface::TASK_STATUS_ACTIVE,
                                     $comment = null)
     {
-        if (!$validated_command = self::validateCommand($command)) {
+        if (!$validatedCommand = self::validateCommand($command)) {
             return $task;
         }
         $task->setStatus($status);
-        $task->setCommand($validated_command);
+        $task->setCommand($validatedCommand);
         $task->setTime($time);
         if (isset($comment)) {
             $task->setComment($comment);
@@ -104,41 +104,41 @@ class TaskManager
      */
     public static function parseCrontab($cron, $taskClass)
     {
-        $cron_array = explode(PHP_EOL, $cron);
+        $cronArray = explode(PHP_EOL, $cron);
         $comment    = null;
-        $result     = [];
-        foreach ($cron_array as $c) {
-            $c = trim($c);
-            if (empty($c)) {
+        $tasks      = [];
+        foreach ($cronArray as $cronElement) {
+            $cronElement = trim($cronElement);
+            if (empty($cronElement)) {
                 continue;
             }
-            $r = [$c];
-            if (preg_match(self::CRON_LINE_REGEXP, $c, $matches)) {
+            $task = [$cronElement];
+            if (preg_match(self::CRON_LINE_REGEXP, $cronElement, $matches)) {
                 try {
                     CronExpression::factory($matches[2]);
                 } catch (\Exception $e) {
-                    $r[1]     = 'Time expression is not valid';
-                    $r[2]     = $matches[2];
-                    $result[] = $r;
+                    $task[1]     = 'Time expression is not valid';
+                    $task[2]     = $matches[2];
+                    $tasks[] = $task;
                     continue;
                 }
-                $task = self::createTaskWithCrontabLine($taskClass, $matches, $comment);
+                $taskObject = self::createTaskWithCrontabLine($taskClass, $matches, $comment);
 
-                $r [1] = 'Saved';
-                $r [2] = $task;
+                $task[1] = 'Saved';
+                $task[2] = $taskObject;
 
                 $comment = null;
-            } elseif (preg_match('/#([\w\d\s]+)/i', $c, $matches)) {
+            } elseif (preg_match('/#([\w\d\s]+)/i', $cronElement, $matches)) {
                 $comment = trim($matches[1]);
-                $r [1]   = 'Comment';
-                $r [2]   = $comment;
+                $task[1]   = 'Comment';
+                $task[2]   = $comment;
             } else {
-                $r [1] = 'Not matched';
+                $task[1] = 'Not matched';
             }
-            $result[] = $r;
+            $tasks[] = $task;
         }
 
-        return $result;
+        return $tasks;
     }
 
     /**
@@ -174,12 +174,12 @@ class TaskManager
      *
      * @param TaskInterface $task
      * @param string        $path
-     * @param string        $php_bin
+     * @param string        $phpBin
      * @param string        $inputFile
      *
      * @return string
      */
-    public static function getTaskCrontabLine($task, $path, $php_bin, $inputFile)
+    public static function getTaskCrontabLine($task, $path, $phpBin, $inputFile)
     {
         $str     = '';
         $comment = $task->getComment();
@@ -190,8 +190,8 @@ class TaskManager
             $str .= '#';
         }
         list($class, $method, $args) = self::parseCommand($task->getCommand());
-        $exec_cmd = $php_bin . ' ' . $inputFile . ' ' . $class . ' ' . $method . ' ' . implode(' ', $args);
-        $str .= $task->getTime() . ' cd ' . $path . '; ' . $exec_cmd . ' 2>&1 > /dev/null';
+        $execCmd = $phpBin . ' ' . $inputFile . ' ' . $class . ' ' . $method . ' ' . implode(' ', $args);
+        $str .= $task->getTime() . ' cd ' . $path . '; ' . $execCmd . ' 2>&1 > /dev/null';
 
         return $str . PHP_EOL;
     }
