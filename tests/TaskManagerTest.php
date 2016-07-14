@@ -51,6 +51,6 @@ class TaskManagerTest extends \PHPUnit_Framework_TestCase
         $task->setComment('comment');
         $task->setTime('* * * * *');
         $export = TaskManager::getTaskCrontabLine($task, 'path', 'php', 'index.php');
-        $this->assertEquals("#comment\n#* * * * * cd path; php index.php Class method  2>&1 > /dev/null\n", $export);
+        $this->assertEquals("#comment" . PHP_EOL . "#* * * * * cd path; php index.php Class method  2>&1 > /dev/null" . PHP_EOL, $export);
     }
 }

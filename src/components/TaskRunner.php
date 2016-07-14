@@ -47,7 +47,7 @@ class TaskRunner
     public static function runTask($task)
     {
         $run = $task->createTaskRun();
-        $run->setTaskId($task->getTaskId());
+        $run->setTaskId($task->getId());
         $run->setTs(date('Y-m-d H:i:s'));
         $run->setStatus(TaskRunInterface::RUN_STATUS_STARTED);
         $run->saveTaskRun();

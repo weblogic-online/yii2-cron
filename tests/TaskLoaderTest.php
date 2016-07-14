@@ -20,33 +20,33 @@ class TaskLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $result = TaskLoader::getAllMethods(
             [__DIR__ . '/..', __DIR__, __DIR__ . '/correct_mocks'],
-            [null, 'mult1mate\\crontab_tests\\']
+            [null, 'vm\\cron_tests\\']
         );
         $this->assertTrue(is_array($result));
     }
 
     public function testGetAllMethodsExceptions()
     {
-        $this->setExpectedException('vm\cron\TaskManagerException');
+        $this->setExpectedException('vm\cron\components\TaskManagerException');
         TaskLoader::getAllMethods('/mocks/');
     }
 
     public function testGetControllerMethodsExceptions()
     {
-        $this->setExpectedException('vm\cron\TaskManagerException');
+        $this->setExpectedException('vm\cron\components\TaskManagerException');
         TaskLoader::getControllerMethods('/mocks/');
     }
 
     public function testLoadControllerExceptionsFile()
     {
-        $this->setExpectedException('vm\cron\TaskManagerException');
+        $this->setExpectedException('vm\cron\components\TaskManagerException');
         TaskLoader::setClassFolder(__DIR__ . '/wrong_mocks');
         TaskLoader::loadController('FileWithoutClass');
     }
 
     public function testLoadControllerExceptions()
     {
-        $this->setExpectedException('vm\cron\TaskManagerException');
+        $this->setExpectedException('vm\cron\components\TaskManagerException');
         TaskLoader::setClassFolder(__DIR__);
         TaskLoader::loadController('MockClass');
     }

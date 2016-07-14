@@ -15,7 +15,11 @@ use yii\base\Exception;
  */
 class CronModule extends \yii\base\Module
 {
+    /**
+     * @var string
+     */
     public $controllerNamespace = 'vm\cron\controllers';
+
     /**
      * @throws Exception
      */

@@ -54,13 +54,16 @@ class TaskMock implements TaskInterface
         return new TaskRunMock();
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTime()
     {
@@ -68,7 +71,7 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @param mixed $time
+     * @param string $time
      */
     public function setTime($time)
     {
@@ -92,7 +95,7 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCommand()
     {
@@ -100,7 +103,7 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @param mixed $command
+     * @param string $command
      */
     public function setCommand($command)
     {
@@ -108,7 +111,7 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getComment()
     {
@@ -116,7 +119,7 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @param mixed $comment
+     * @param string $comment
      */
     public function setComment($comment)
     {
