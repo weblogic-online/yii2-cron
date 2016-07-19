@@ -1,16 +1,15 @@
 <?php
 /**
  * @author mult1mate
- * Date: 06.02.16
- * Time: 16:40
+ * @since 06.02.2016
  */
-namespace vm\cron\assets;
+namespace rossmann\cron\assets;
 
 use yii\web\AssetBundle;
 
 class TasksAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/voodoo-mobile/yii2-cron/src/assets';
+    public $sourcePath = '@vendor/rossmann-it/yii2-cron/src/assets';
 
     public $js = [
         'manager_actions.js',

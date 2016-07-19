@@ -1,8 +1,7 @@
 <?php
 /**
  * @author mult1mate
- * Date: 31.12.15
- * Time: 13:35
+ * @since 31.12.2015
  */
 echo $this->render('tasks_template');
 $this->title = 'Task Manager - Import/Export';

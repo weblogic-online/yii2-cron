@@ -1,8 +1,7 @@
 <?php
 /**
  * @author mult1mate
- * Date: 05.01.16
- * Time: 18:21
+ * @since 05.01.2016
  * @var string $dateBegin
  * @var string $dateEnd
  * @var array  $report

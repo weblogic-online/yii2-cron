@@ -1,12 +1,11 @@
 <?php
-namespace vm\cron_tests;
+namespace rossmann\cron_tests;
 
-use vm\cron\components\TaskRunInterface;
+use rossmann\cron\components\TaskRunInterface;
 
 /**
  * @author mult1mate
- * Date: 01.02.16
- * Time: 10:12
+ * @since 01.02.2016
  */
 class TaskRunMock implements TaskRunInterface
 {

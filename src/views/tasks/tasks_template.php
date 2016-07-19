@@ -1,9 +1,8 @@
 <?php
 /**
  * @author mult1mate
- * Date: 21.12.15
- * Time: 0:29
- * @var $content
+ * @since 31.12.2015
+ * @var string $content
  */
 use yii\helpers\Html;
 

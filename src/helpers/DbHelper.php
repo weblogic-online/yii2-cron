@@ -1,13 +1,11 @@
 <?php
-namespace vm\cron\components;
+namespace rossmann\cron\helpers;
 
 /**
  * Class DbHelper
  * Contains common sql queries
- * @package vm\cron
  * @author  mult1mate
- * Date: 05.01.16
- * Time: 18:08
+ * @since 05.01.2016
  */
 class DbHelper
 {

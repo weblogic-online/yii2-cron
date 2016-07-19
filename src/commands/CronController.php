@@ -1,13 +1,12 @@
 <?php
 /**
  * @author mult1mate
- * Date: 06.02.16
- * Time: 16:52
+ * @since 06.02.2016
  */
-namespace vm\cron\commands;
+namespace rossmann\cron\commands;
 
-use vm\cron\models\Task;
-use vm\cron\components\TaskRunner;
+use rossmann\cron\models\Task;
+use rossmann\cron\components\TaskRunner;
 use yii\console\Controller;
 
 class CronController extends Controller

@@ -1,5 +1,5 @@
 <?php
-namespace vm\cron\components;
+namespace rossmann\cron\components;
 
 use Cron\CronExpression;
 
@@ -7,9 +7,7 @@ use Cron\CronExpression;
  * Class TaskManager
  * Contains methods for manipulate TaskInterface objects
  * @author  mult1mate
- * @package vm\cron
- * Date: 20.12.15
- * Time: 12:55
+ * @since 20.12.2015
  */
 class TaskManager
 {

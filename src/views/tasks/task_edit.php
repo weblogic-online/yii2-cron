@@ -1,13 +1,12 @@
 <?php
 /**
  * @author mult1mate
- * Date: 21.12.15
- * Time: 0:56
- * @var \vm\cron\models\Task $task
+ * @since 31.12.2015
+ * @var \rossmann\cron\models\Task $task
  * @var array $methods
  */
 use yii\bootstrap\ActiveForm;
-use vm\cron\components\TaskInterface;
+use rossmann\cron\components\TaskInterface;
 
 echo $this->render('tasks_template');
 $this->title = 'Task Manager - Edit task';

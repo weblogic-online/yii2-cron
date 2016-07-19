@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 /**
  * Initializes tasks tables
+ * @author rossmann-it
  */
 class m160712_111111_taskmanager_init extends Migration {
 

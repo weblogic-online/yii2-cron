@@ -1,5 +1,5 @@
 {
-  "name": "Rossmann-IT/yii2-cron",
+  "name": "rossmann-it/yii2-cron",
   "description": "Flexible cron tasks manager for the Yii2 Framework",
   "minimum-stability": "dev",
   "type": "yii2-module",
@@ -42,8 +42,8 @@
   },
   "autoload": {
     "psr-4": {
-      "vm\\cron\\": "src/",
-      "vm\\cron_tests\\": "tests/"
+      "rossmann\\cron\\": "src/",
+      "rossmann\\cron_tests\\": "tests/"
     }
   }
 }

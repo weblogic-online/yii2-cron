@@ -1,13 +1,12 @@
 <?php
-namespace vm\cron_tests;
+namespace rossmann\cron_tests;
 
-use vm\cron\components\TaskInterface;
-use vm\cron\components\TaskManager;
+use rossmann\cron\components\TaskInterface;
+use rossmann\cron\components\TaskManager;
 
 /**
  * @author mult1mate
- * Date: 01.02.16
- * Time: 0:48
+ * @since 07.02.2016
  */
 class TaskManagerTest extends \PHPUnit_Framework_TestCase
 {

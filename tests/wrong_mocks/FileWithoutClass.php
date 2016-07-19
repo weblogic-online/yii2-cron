@@ -1,6 +1,5 @@
 <?php
 /**
  * @author mult1mate
- * Date: 07.02.16
- * Time: 14:12
+ * @since 07.02.2016
  */

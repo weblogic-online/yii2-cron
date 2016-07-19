@@ -1,13 +1,12 @@
 <?php
-namespace vm\cron\components;
+namespace rossmann\cron\components;
 
 /**
  * Interface TaskInterface
  * Common interface to handle tasks
- * @package vm\cron
  * @author  mult1mate
- * Date: 20.12.15
- * Time: 13:25
+ * @author  rossmann-it
+ * @since 20.12.2015
  */
 interface TaskInterface
 {
@@ -118,4 +117,26 @@ interface TaskInterface
      * @param string $timestamp
      */
     public function setTsUpdated($timestamp);
+
+    /**
+     * @return bool
+     */
+    public function isLocked();
+
+    /**
+     * sets the locked flag to 0 in the database
+     */
+    public function releaseLock();
+
+    /**
+     * @param int|bool $locked
+     */
+    public function setLocked($locked);
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function acquireLock();
+
 }

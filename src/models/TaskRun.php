@@ -1,14 +1,15 @@
 <?php
-namespace vm\cron\models;
+namespace rossmann\cron\models;
 
-use vm\cron\components\TaskRunInterface;
+use rossmann\cron\components\TaskRunInterface;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 
 /**
  * @author mult1mate
- * Date: 20.12.15
- * Time: 21:12
+ * @author rossmann-it
+ * @since 20.12.2015
+ *
  * @property int    $id
  * @property int    $task_id
  * @property string $status
@@ -31,7 +32,7 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
      * @param int $count
      * @return array
      */
-    public static function getLast($taskId = null, $count = 100)
+    public static function getLastRuns($taskId = null, $count = 100)
     {
         $db = (new Query())
             ->select('task_runs.*, tasks.command')
@@ -44,6 +45,17 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
         }
 
         return $db->all();
+    }
+
+    /**
+     * @param int $taskId
+     * @return null|TaskRun
+     */
+    public static function getLast($taskId) {
+        $last = self::find()
+            ->where(['task_id' => ':task_id'], [':task_id' => $taskId])
+            ->orderBy('id DESC')->one();
+        return $last;
     }
 
     /**

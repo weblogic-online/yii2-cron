@@ -1,13 +1,12 @@
 <?php
 /**
  * @author mult1mate
- * Date: 21.12.15
- * Time: 0:38
+ * @since 21.12.2015
  * @var array $tasks
  * @var array $methods
  */
 use yii\helpers\Html;
-use vm\cron\components\TaskInterface;
+use rossmann\cron\components\TaskInterface;
 
 echo $this->render('tasks_template');
 $this->title = 'Task Manager - Task list';
@@ -31,7 +30,7 @@ $this->title = 'Task Manager - Task list';
     <?php
     foreach ($tasks as $t):
         /**
-         * @var \vm\cron\models\Task $t
+         * @var \rossmann\cron\models\Task $t
          */
         $statusClass = (TaskInterface::TASK_STATUS_ACTIVE == $t->status) ? '' : 'text-danger';
         ?>

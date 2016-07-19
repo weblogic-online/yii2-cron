@@ -1,13 +1,11 @@
 <?php
-namespace vm\cron\components;
+namespace rossmann\cron\components;
 
 /**
  * Interface TaskRunInterface
  * Common interface to handle task runs
- * @package vm\cron
  * @author  mult1mate
- * Date: 20.12.15
- * Time: 18:49
+ * @since 20.12.2015
  */
 interface TaskRunInterface
 {

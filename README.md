@@ -4,13 +4,12 @@ This is a flexible tasks manager designed for MVC-type applications. It's used i
 
 The purpose of this tool is to provide an easy way to manipulate repetitive tasks. 
 
-[Live Demo](https://cron.multimate.ru)
-
-[![Build Status](https://travis-ci.org/MUlt1mate/cron-manager.svg?branch=master)](https://travis-ci.org/MUlt1mate/cron-manager)
-[![Test Coverage](https://codeclimate.com/github/MUlt1mate/cron-manager/badges/coverage.svg)](https://codeclimate.com/github/MUlt1mate/cron-manager/coverage)
+[Live Demo of original project by multimate](https://cron.multimate.ru)
+[![Code Climate](https://codeclimate.com/github/Rossmann-IT/yii2-cron/badges/gpa.svg)](https://codeclimate.com/github/Rossmann-IT/yii2-cron)
+[![Test Coverage](https://codeclimate.com/github/Rossmann-IT/yii2-cron/badges/coverage.svg)](https://codeclimate.com/github/Rossmann-IT/yii2-cron/coverage)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
-## How this is works
+## How this works
 Replace all tasks in crontab file with one which will invoke method ```TaskRunner::checkAndRunTasks()```.
 
 Import tasks from current crontab file or add them manually. Active tasks will run one by one if current time matches with the task's time expression. Output of tasks can be handled. For each execution will be assigned status:
@@ -32,21 +31,21 @@ Import tasks from current crontab file or add them manually. Active tasks will r
 
 Install package via Composer
 ```
-composer require voodoo-mobile/yii2-cron
+composer require rossmann-it/yii2-cron
 ```
 
 ### Requirements
 
-* PHP 5.3 or above
+* PHP 5.4 or above
 * [mtdowling/cron-expression](https://github.com/mtdowling/cron-expression)
 
 ### Configure
-* Create tables if you want to store data in database (SQL queries in `DbHelper` class)
+* Create tables if you want to store data in database (use Yii migration)
 * Implement `TaskInterface` and `TaskRunInterface` or use predefined classes from the Example folder
 * Copy and modify controller and views. Or create your own.
 * Import tasks through interface or add them manually
 * Add new line into crontab file that will invoke ```TaskRunner::checkAndRunTasks()```
-* Disable tasks that will be invoke through the manager
+* Disable tasks that will be invoked through the manager
 * Make sure that manager is not publicly available
 
 ## Screenshots

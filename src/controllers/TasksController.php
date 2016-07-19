@@ -1,30 +1,37 @@
 <?php
-namespace vm\cron\controllers;
+namespace rossmann\cron\controllers;
 
-use vm\cron\models\Task;
-use vm\cron\models\TaskRun;
-use vm\cron\assets\TasksAsset;
-use vm\cron\components\TaskInterface;
-use vm\cron\components\TaskLoader;
-use vm\cron\components\TaskManager;
-use vm\cron\components\TaskRunner;
+use rossmann\cron\models\Task;
+use rossmann\cron\models\TaskRun;
+use rossmann\cron\assets\TasksAsset;
+use rossmann\cron\components\TaskInterface;
+use rossmann\cron\components\TaskLoader;
+use rossmann\cron\components\TaskManager;
+use rossmann\cron\components\TaskRunner;
 use yii\web\Controller;
 
 /**
  * @author mult1mate
- * Date: 20.12.15
- * Time: 20:56
+ * @since 20.12.2015
  */
 class TasksController extends Controller
 {
-    private static $tasksControllersFolder;
-    private static $tasksNamespace;
+    /** @var string */
+    protected static $tasksControllersFolder;
 
+    /** @var string */
+    protected static $tasksNamespace;
+
+    /**
+     * @param string $id
+     * @param \yii\base\Module $module
+     * @param array $config
+     */
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config);
         self::$tasksControllersFolder = __DIR__ . '/../models/';
-        self::$tasksNamespace         = 'vm\\cron\\models\\';
+        self::$tasksNamespace         = 'rossmann\\cron\\models\\';
         TasksAsset::register($this->view);
     }
 
@@ -72,7 +79,7 @@ class TasksController extends Controller
     public function actionTaskLog()
     {
         $taskId = \Yii::$app->request->get('task_id');
-        $runs    = TaskRun::getLast($taskId);
+        $runs    = TaskRun::getLastRuns($taskId, 30);
 
         return $this->render('runs_list', ['runs' => $runs]);
     }

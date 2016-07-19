@@ -1,14 +1,12 @@
 <?php
-namespace vm\cron_tests;
+namespace rossmann\cron_tests;
 
-use vm\cron\components\TaskInterface;
-use vm\cron\components\TaskLoader;
-use vm\cron\components\TaskRunner;
+use rossmann\cron\components\TaskInterface;
+use rossmann\cron\components\TaskLoader;
 
 /**
  * @author mult1mate
- * Date: 07.02.16
- * Time: 14:15
+ * @since 07.02.2016
  */
 class TaskRunnerTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,33 +16,33 @@ class TaskRunnerTest extends \PHPUnit_Framework_TestCase
         $task          = TaskMock::createNew();
         $task->setStatus(TaskInterface::TASK_STATUS_ACTIVE);
         $task->setTime('* * * * *');
-        TaskRunner::checkAndRunTasks([$task, $taskInactive]);
+        TaskRunnerMock::checkAndRunTasks([$task, $taskInactive]);
     }
 
     public function testGetRunDates()
     {
-        $result = TaskRunner::getRunDates('* * * * *');
+        $result = TaskRunnerMock::getRunDates('* * * * *');
         $this->assertTrue(is_array($result));
         $this->assertEquals(10, count($result));
     }
 
     public function testGetRunDatesException()
     {
-        $result = TaskRunner::getRunDates('wrong expression');
+        $result = TaskRunnerMock::getRunDates('wrong expression');
         $this->assertTrue(is_array($result));
         $this->assertEquals(0, count($result));
     }
 
     public function testParseAndRunCommand()
     {
-        $result = TaskRunner::parseAndRunCommand('vm\cron_tests\ActionMock::returnResult()');
+        $result = TaskRunnerMock::parseAndRunCommand('rossmann\cron_tests\ActionMock::returnResult()');
         $this->assertTrue($result);
 
-        $result = TaskRunner::parseAndRunCommand('vm\cron_tests\ActionMock::wrongMethod()');
+        $result = TaskRunnerMock::parseAndRunCommand('rossmann\cron_tests\ActionMock::wrongMethod()');
         $this->assertFalse($result);
 
         TaskLoader::setClassFolder(__DIR__ . '/runner_mocks');
-        $result = TaskRunner::parseAndRunCommand('RunnerMock::anyMethod()');
+        $result = TaskRunnerMock::parseAndRunCommand('RunnerMock::anyMethod()');
         $this->assertFalse($result);
     }
 }

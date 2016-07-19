@@ -1,12 +1,11 @@
 <?php
-namespace vm\cron_tests;
+namespace rossmann\cron_tests;
 
-use vm\cron\components\DbHelper;
+use rossmann\cron\helpers\DbHelper;
 
 /**
  * @author mult1mate
- * Date: 07.02.16
- * Time: 18:17
+ * @since 07.02.2016
  */
 class DbHelperTest extends \PHPUnit_Framework_TestCase
 {

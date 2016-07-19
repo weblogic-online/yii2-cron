@@ -1,11 +1,10 @@
 <?php
 /**
  * @author mult1mate
- * Date: 07.02.16
- * Time: 14:39
+ * @since 07.02.2016
  */
 
-namespace vm\cron_tests;
+namespace rossmann\cron_tests;
 
 class ActionMock
 {

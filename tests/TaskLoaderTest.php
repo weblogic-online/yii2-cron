@@ -1,12 +1,11 @@
 <?php
-namespace vm\cron_tests;
+namespace rossmann\cron_tests;
 
-use vm\cron\components\TaskLoader;
+use rossmann\cron\components\TaskLoader;
 
 /**
  * @author mult1mate
- * Date: 07.02.16
- * Time: 13:49
+ * @since 07.02.2016
  */
 class TaskLoaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,33 +19,33 @@ class TaskLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $result = TaskLoader::getAllMethods(
             [__DIR__ . '/..', __DIR__, __DIR__ . '/correct_mocks'],
-            [null, 'vm\\cron_tests\\']
+            [null, 'rossmann\\cron_tests\\']
         );
         $this->assertTrue(is_array($result));
     }
 
     public function testGetAllMethodsExceptions()
     {
-        $this->setExpectedException('vm\cron\components\TaskManagerException');
+        $this->setExpectedException('rossmann\cron\components\TaskManagerException');
         TaskLoader::getAllMethods('/mocks/');
     }
 
     public function testGetControllerMethodsExceptions()
     {
-        $this->setExpectedException('vm\cron\components\TaskManagerException');
+        $this->setExpectedException('rossmann\cron\components\TaskManagerException');
         TaskLoader::getControllerMethods('/mocks/');
     }
 
     public function testLoadControllerExceptionsFile()
     {
-        $this->setExpectedException('vm\cron\components\TaskManagerException');
+        $this->setExpectedException('rossmann\cron\components\TaskManagerException');
         TaskLoader::setClassFolder(__DIR__ . '/wrong_mocks');
         TaskLoader::loadController('FileWithoutClass');
     }
 
     public function testLoadControllerExceptions()
     {
-        $this->setExpectedException('vm\cron\components\TaskManagerException');
+        $this->setExpectedException('rossmann\cron\components\TaskManagerException');
         TaskLoader::setClassFolder(__DIR__);
         TaskLoader::loadController('MockClass');
     }

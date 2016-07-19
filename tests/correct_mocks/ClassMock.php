@@ -2,8 +2,7 @@
 
 /**
  * @author mult1mate
- * Date: 07.02.16
- * Time: 14:44
+ * @since 07.02.2016
  */
 class ClassMock
 {

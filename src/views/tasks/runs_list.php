@@ -1,8 +1,7 @@
 <?php
 /**
  * @author mult1mate
- * Date: 21.12.15
- * Time: 1:13
+ * @since 21.12.2015
  * @var array $runs
  */
 echo $this->render('tasks_template');
@@ -20,7 +19,7 @@ $this->title = 'Task Manager - Run list';
     </tr>
     <?php foreach ($runs as $r):
         /**
-         * @var \vm\cron\models\TaskRun $r
+         * @var \rossmann\cron\models\TaskRun $r
          */
         ?>
         <tr>

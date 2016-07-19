@@ -1,15 +1,15 @@
 <?php
-namespace vm\cron\components;
+namespace rossmann\cron\components;
 
 use Cron\CronExpression;
+use rossmann\cron\models\TaskRun;
 
 /**
  * Class TaskRunner
  * Runs tasks and handles time expression
  * @author  mult1mate
- * @package vm\cron
- * Date: 07.02.16
- * Time: 12:50
+ * @author  rossmann-it
+ * @since 07.02.2016
  */
 class TaskRunner
 {
@@ -20,19 +20,29 @@ class TaskRunner
      */
     public static function checkAndRunTasks($tasks)
     {
-        $date = date('Y-m-d H:i:s');
-        foreach ($tasks as $t) {
+        $invocationDatetime = date('Y-m-d H:i:00');
+        foreach ($tasks as $task) {
             /**
-             * @var TaskInterface $t
+             * @var TaskInterface $task
              */
-            if (TaskInterface::TASK_STATUS_ACTIVE != $t->getStatus()) {
+            if (TaskInterface::TASK_STATUS_ACTIVE != $task->getStatus()) {
                 continue;
             }
 
-            $cron = CronExpression::factory($t->getTime());
+            $cron = CronExpression::factory($task->getTime());
 
-            if ($cron->isDue($date)) {
-                self::runTask($t);
+            if ($cron->isDue($invocationDatetime)) {
+                static::runTask($task);
+            } else {
+                // The task is not due exactly now, but maybe another long running task from a previous invocation
+                // of the TaskRunner is blocking the execution queue. Check if the task was run since its last due date:
+                $lastRunTs = TaskRun::getLast($task->getId())->getTs();
+                $lastDue = $cron->getPreviousRunDate($invocationDatetime);
+                if ($lastRunTs < $lastDue->format('U')) {
+                    static::log('info', 'Task with ID ' . $task->getId() . ' was not executed on its last due date ('
+                        . $lastDue->format('Y-m-d H:i:s') . ") or since then. Executing it now.");
+                    static::runTask($task);
+                }
             }
         }
     }
@@ -46,30 +56,62 @@ class TaskRunner
      */
     public static function runTask($task)
     {
-        $run = $task->createTaskRun();
-        $run->setTaskId($task->getId());
-        $run->setTs(date('Y-m-d H:i:s'));
-        $run->setStatus(TaskRunInterface::RUN_STATUS_STARTED);
-        $run->saveTaskRun();
-        $runFinalStatus = TaskRunInterface::RUN_STATUS_COMPLETED;
+        $result = $task->acquireLock();
+        if ($result) {
+            $run = $task->createTaskRun();
+            $run->setTs(date('Y-m-d H:i:s'));
+            $run->setStatus(TaskRunInterface::RUN_STATUS_STARTED);
+            $run->saveTaskRun();
+        } else {
+            $lastRun = TaskRun::getLast($task->getId());
+            if (!$lastRun) {
+                static::log('error', 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired, '
+                . 'but no previous run could be found');
+            } elseif ($lastRun->status == TaskRun::RUN_STATUS_STARTED) {
+                if ($lastRun->getTs() < date('Y-m-d H:i:s', time() - 3600)) {
+                    static::log('error', 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired, '
+                        . 'and the last run is in "running" state since more than one hour. Check if manual action is required.');
+                } else {
+                    static::log('info', 'Task with ID ' . $task->getId() . ' cannot be run because it is already running.');
+                }
+            } elseif ($lastRun->status == TaskRun::RUN_STATUS_ERROR) {
+                static::log('error', 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired, '
+                    . 'and the last run ended in an error state. Check if the lock has to be released manually.');
+            } else {
+                static::log('error', 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired '
+                . 'although the last run is marked as completed. If you see this message only once, the reason might be '
+                . 'a race condition, in that case no action is required.');
+            }
+            return false;
+        }
 
         ob_start();
         $timeBegin = microtime(true);
 
-        $result = self::parseAndRunCommand($task->getCommand());
-        if (!$result) {
+        try {
+            $result = static::parseAndRunCommand($task->getCommand());
+            if (!$result) {
+                $runFinalStatus = TaskRunInterface::RUN_STATUS_ERROR;
+            } else {
+                $runFinalStatus = TaskRunInterface::RUN_STATUS_COMPLETED;
+            }
+        } catch (\Exception $e) {
             $runFinalStatus = TaskRunInterface::RUN_STATUS_ERROR;
+            static::log('error', 'Exception while running task with ID ' . $task->getId() . ': ' . get_class($e) . PHP_EOL . $e->getMessage());
         }
 
         $output = ob_get_clean();
         $run->setOutput($output);
 
+        $run->setStatus($runFinalStatus);
+
         $timeEnd = microtime(true);
-        $time     = round(($timeEnd - $timeBegin), 2);
+        $time    = round(($timeEnd - $timeBegin), 2);
         $run->setExecutionTime($time);
 
-        $run->setStatus($runFinalStatus);
         $run->saveTaskRun();
+
+        $task->releaseLock();
 
         return $output;
     }
@@ -93,11 +135,10 @@ class TaskRunner
             if (!method_exists($obj, $method)) {
                 throw new TaskManagerException('method ' . $method . ' not found in class ' . $class);
             }
-
             return call_user_func_array([$obj, $method], $args);
-        } catch (\Exception $e) {
-            echo 'Caught an exception: ' . get_class($e) . ': ' . PHP_EOL . $e->getMessage() . PHP_EOL;
 
+        } catch (\Exception $e) {
+            static::log('error', 'Exception while executing the task command: ' . get_class($e) . ': ' . PHP_EOL . $e->getMessage());
             return false;
         }
     }
@@ -121,4 +162,13 @@ class TaskRunner
 
         return $dates;
     }
+
+    /**
+     * @param string $level
+     * @param string $message
+     */
+    protected static function log($level, $message) {
+        \Yii::$level($message);
+    }
+
 }

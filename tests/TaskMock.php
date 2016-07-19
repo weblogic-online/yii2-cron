@@ -1,22 +1,22 @@
 <?php
-namespace vm\cron_tests;
+namespace rossmann\cron_tests;
 
-use vm\cron\components\TaskInterface;
+use rossmann\cron\components\TaskInterface;
 
 /**
  * @author mult1mate
- * Date: 01.02.16
- * Time: 10:07
+ * @since 01.02.2016
  */
 class TaskMock implements TaskInterface
 {
-    private $id;
-    private $time;
-    private $command;
-    private $status;
-    private $comments;
-    private $timestamp;
-    private $ts_updated;
+    protected $id;
+    protected $time;
+    protected $command;
+    protected $status;
+    protected $comments;
+    protected $timestamp;
+    protected $ts_updated;
+    protected $locked;
 
     public static function taskGet($taskId)
     {
@@ -47,7 +47,7 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @return \vm\cron\components\TaskRunInterface
+     * @return \rossmann\cron\components\TaskRunInterface
      */
     public function createTaskRun()
     {
@@ -157,4 +157,39 @@ class TaskMock implements TaskInterface
     {
         $this->ts_updated = $timestamp;
     }
+
+    /**
+     * @return bool
+     */
+    public function isLocked() {
+        return (bool) $this->locked;
+    }
+
+    /**
+     * sets the locked flag to 0 in the database
+     */
+    public function releaseLock() {
+        $this->locked = 0;
+    }
+
+    /**
+     * @param int|bool $locked
+     */
+    public function setLocked($locked) {
+        $this->locked = 1;
+    }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function acquireLock() {
+        if ($this->locked) {
+            return false;
+        } else {
+            $this->locked = 1;
+            return true;
+        }
+    }
+
 }

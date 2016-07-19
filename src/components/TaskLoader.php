@@ -1,13 +1,11 @@
 <?php
-namespace vm\cron\components;
+namespace rossmann\cron\components;
 
 /**
  * Class TaskLoader
  * Loads classes and provides list of available methods
  * @author  mult1mate
- * @package vm\cron
- * Date: 07.02.16
- * Time: 12:53
+ * @since 07.02.2016
  */
 class TaskLoader
 {

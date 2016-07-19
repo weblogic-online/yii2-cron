@@ -4,21 +4,19 @@
  * @link      https://voodoo.rocks
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace vm\cron;
+namespace rossmann\cron;
 
-use Yii;
 use yii\base\Exception;
 
 /**
  * Class CronModule
- * @package vm\api
  */
 class CronModule extends \yii\base\Module
 {
     /**
      * @var string
      */
-    public $controllerNamespace = 'vm\cron\controllers';
+    public $controllerNamespace = 'rossmann\cron\controllers';
 
     /**
      * @throws Exception

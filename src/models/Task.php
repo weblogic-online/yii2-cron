@@ -1,15 +1,16 @@
 <?php
 
-namespace vm\cron\models;
+namespace rossmann\cron\models;
 
-use vm\cron\components\TaskInterface;
-use vm\cron\components\TaskRunInterface;
+use rossmann\cron\components\TaskInterface;
+use rossmann\cron\components\TaskRunInterface;
 use yii\db\ActiveRecord;
 
 /**
  * @author mult1mate
- * Date: 20.12.15
- * Time: 20:54
+ * @author rossmann-it
+ * @since 20.12.2015
+ *
  * @property int    $id
  * @property string $time
  * @property string $command
@@ -17,6 +18,7 @@ use yii\db\ActiveRecord;
  * @property string $comments 'comment' is a reserved word in some DBMS, we use 'comments' so that escaping is not necessary
  * @property string $ts
  * @property string $ts_updated
+ * @property int $locked
  */
 class Task extends ActiveRecord implements TaskInterface
 {
@@ -122,7 +124,9 @@ class Task extends ActiveRecord implements TaskInterface
      */
     public function createTaskRun()
     {
-        return new TaskRun();
+        $taskRun = new TaskRun();
+        $taskRun->setTaskId($this->id);
+        return $taskRun;
     }
 
     /**
@@ -228,4 +232,77 @@ class Task extends ActiveRecord implements TaskInterface
     {
         $this->ts_updated = $timestamp;
     }
+
+    /**
+     * @return bool
+     */
+    public function isLocked() {
+        return (bool) $this->locked;
+    }
+
+    /**
+     * sets the locked flag to 0 in the database
+     */
+    public function releaseLock() {
+        $this->locked = 0;
+        $this->update();
+    }
+
+    /**
+     * @param int|bool $locked
+     */
+    public function setLocked($locked) {
+        $this->locked = intval($locked);
+    }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function acquireLock() {
+        if (!$this->id) {
+            throw new \LogicException('Task ID must be set to acquire a lock');
+        }
+        $db = \Yii::$app->getDb();
+        $transaction = $db->beginTransaction();
+        try {
+            // get the current lock status and lock the row in the database
+            $query = $db->createCommand(
+                'SELECT locked FROM ' . self::tableName(). ' WHERE id = :id'. ' FOR UPDATE',
+                [':id' => $this->id]
+            );
+            $locked = $query->queryScalar();
+
+            if ($locked == 1) {
+                // task is already locked
+                $transaction->commit();
+                $this->locked = 1;
+                \Yii::info('Tried to acquire a lock for the task with ID ' . $this->id . ', but it is already/still locked');
+                return false;
+            } elseif ($locked === 0 OR $locked === '0') {
+                // task was found and is not locked
+                $this->locked = 1;
+                $result = $this->update();
+                $transaction->commit();
+                if ($result > 0) {
+                    // locking was successful
+                    return true;
+                } else {
+                    // affected rows not > 0
+                    \Yii::error('Tried to lock the task with ID ' . $this->id . ', but the database reported zero affected rows');
+                    return false;
+                }
+            } else {
+                // unexpected value for "locked"
+                $transaction->commit();
+                \Yii::error('Tried to look up the lock status of the task with ID ' . $this->id
+                    . ', but a value other than 0/1 or no value was returned: "' . $locked . '"');
+                return false;
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+    }
+
 }
