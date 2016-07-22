@@ -103,7 +103,6 @@ class TaskManager
     public static function parseCrontab($cron, $taskClass)
     {
         $cronArray = explode(PHP_EOL, $cron);
-        $comment    = null;
         $tasks      = [];
         foreach ($cronArray as $cronElement) {
             $cronElement = trim($cronElement);
@@ -120,7 +119,7 @@ class TaskManager
                     $tasks[] = $task;
                     continue;
                 }
-                $taskObject = self::createTaskWithCrontabLine($taskClass, $matches, $comment);
+                $taskObject = self::createTaskWithCrontabLine($taskClass, $matches);
 
                 $task[1] = 'Saved';
                 $task[2] = $taskObject;
@@ -148,7 +147,7 @@ class TaskManager
      *
      * @return TaskInterface
      */
-    private static function createTaskWithCrontabLine($taskClass, $matches, $comment)
+    protected static function createTaskWithCrontabLine($taskClass, $matches, $comment = '')
     {
         $task = $taskClass::createNew();
         $task->setTime(trim($matches[2]));
