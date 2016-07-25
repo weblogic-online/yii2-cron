@@ -4,6 +4,7 @@ namespace rossmann\cron\models;
 
 use rossmann\cron\components\TaskInterface;
 use rossmann\cron\components\TaskRunInterface;
+use rossmann\cron\CronModule;
 use yii\db\ActiveRecord;
 
 /**
@@ -61,9 +62,10 @@ class Task extends ActiveRecord implements TaskInterface
      * Date arithmetic only valid for MySQL
      * @param string $dateBegin
      * @param string $dateEnd
+     * @param string $sqlDialect
      * @return array
      */
-    public static function getReport($dateBegin, $dateEnd)
+    public static function getReport($dateBegin, $dateEnd, $sqlDialect = CronModule::DIALECT_MYSQL)
     {
         $sql = "SELECT t.command, t.id,
         SUM(CASE WHEN tr.status = 'started' THEN 1 ELSE 0 END) AS started,
@@ -73,7 +75,7 @@ class Task extends ActiveRecord implements TaskInterface
         count(*) AS runs
         FROM task_runs AS tr
         LEFT JOIN tasks t ON t.id = tr.task_id
-        WHERE tr.ts BETWEEN :date_begin AND :date_end + INTERVAL 1 DAY
+        WHERE " . self::getDateConstraint($sqlDialect) . "
         GROUP BY command
         ORDER BY tr.task_id";
 
@@ -81,6 +83,26 @@ class Task extends ActiveRecord implements TaskInterface
             ':date_begin' => $dateBegin,
             ':date_end'   => $dateEnd,
         ])->queryAll();
+    }
+
+    /**
+     * get the date constraint for the given SQL dialect
+     * @param string $sqlDialect
+     * @return string
+     */
+    protected static function getDateConstraint($sqlDialect = CronModule::DIALECT_MYSQL) {
+        switch ($sqlDialect) {
+            case CronModule::DIALECT_MYSQL:
+                $constraint = 'tr.ts BETWEEN :date_begin AND :date_end + INTERVAL 1 DAY';
+                break;
+            case CronModule::DIALECT_OCI8:
+                $constraint = "tr.ts BETWEEN TO_DATE(:date_begin, 'YYYY-MM-DD HH24:MI:SS') 
+                    AND TO_DATE(':date_end', 'YYYY-MM-DD HH24:MI:SS') + 1";
+                break;
+            default:
+                throw new \InvalidArgumentException('SQL Dialect "' . $sqlDialect . '" is not implemented in ' . __METHOD__);
+        }
+        return $constraint;
     }
 
     /**

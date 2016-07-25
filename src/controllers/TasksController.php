@@ -193,7 +193,7 @@ class TasksController extends Controller
         $dateEnd   = \Yii::$app->request->get('date_end', date('Y-m-d'));
 
         return $this->render('report', [
-            'report'     => Task::getReport($dateBegin, $dateEnd),
+            'report'     => Task::getReport($dateBegin, $dateEnd, $this->module->sqlDialect),
             'dateBegin' => $dateBegin,
             'dateEnd'   => $dateEnd,
         ]);

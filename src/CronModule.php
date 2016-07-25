@@ -13,10 +13,20 @@ use yii\base\Exception;
  */
 class CronModule extends \yii\base\Module
 {
+    const DIALECT_MYSQL = 'MySQL';
+    const DIALECT_OCI8 = 'Oracle';
+
     /**
      * @var string
      */
     public $controllerNamespace = 'rossmann\cron\controllers';
+
+    /**
+     * Which SQL dialect should be used to generate date expressions
+     * Oracle uses the TO_DATE function
+     * @var string
+     */
+    public $sqlDialect = 'MySQL';
 
     /**
      * @throws Exception
