@@ -97,7 +97,7 @@ class Task extends ActiveRecord implements TaskInterface
                 break;
             case CronModule::DIALECT_OCI8:
                 $constraint = "tr.ts BETWEEN TO_DATE(:date_begin, 'YYYY-MM-DD HH24:MI:SS') 
-                    AND TO_DATE(':date_end', 'YYYY-MM-DD HH24:MI:SS') + 1";
+                    AND TO_DATE(:date_end, 'YYYY-MM-DD HH24:MI:SS') + 1";
                 break;
             default:
                 throw new \InvalidArgumentException('SQL Dialect "' . $sqlDialect . '" is not implemented in ' . __METHOD__);
