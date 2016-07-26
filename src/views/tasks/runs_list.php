@@ -31,7 +31,8 @@ $this->title = 'Task Manager - Run list';
             <td><?= $r['ts'] ?></td>
             <td>
                 <?php if (!empty($r['output'])): ?>
-                    <a href="<?= $r['id'] ?>" data-toggle="modal" data-target="#output_modal"
+                    <a href="#output_modal" data-task-run-id="<?= $r['id'] ?>"
+                       data-toggle="modal" data-target="#output_modal"
                        class="show_output">Show output</a>
                 <?php endif; ?>
             </td>

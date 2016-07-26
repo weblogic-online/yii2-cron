@@ -1,5 +1,5 @@
 window.onload = function () {
-    var controller_url = '/tasks/';
+    var controller_url = '';
     //tasks list page
     $('.run_task').click(function () {
         run_task({id: $(this).attr('id')});
@@ -26,10 +26,11 @@ window.onload = function () {
         return false;
     });
     $('.show_output').click(function () {
-        $.post(controller_url + 'get-output', {task_run_id: $(this).attr('href')}, function (data) {
+        $('#output_container').html('Loading...');
+        $.post(controller_url + 'get-output', {task_run_id: $(this).attr('data-task-run-id')}, function (data) {
             $('#output_container').html(data);
             return false;
-        })
+        });
     });
     $('#run_custom_task').click(function () {
         run_task({custom_task: $('#command').val()});
