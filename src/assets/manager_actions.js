@@ -2,7 +2,7 @@ window.onload = function () {
     var controller_url = '';
     //tasks list page
     $('.run_task').click(function () {
-        run_task({id: $(this).attr('id')});
+        runTask({id: $(this).attr('id')});
         return false;
     });
     $('#select_all').change(function () {
@@ -17,13 +17,11 @@ window.onload = function () {
             return $(this).val();
         }).get();
         if ('Run' == action) {
-            run_task({task_id: tasks});
+            runTask({id: tasks});
+            return false;
         } else {
-            $.post(controller_url + 'tasks-update', {task_id: tasks, action: action}, function () {
-                window.location.reload();
-            });
+            return true;
         }
-        return false;
     });
     $('.show_output').click(function () {
         $('#output_container').html('Loading...');
@@ -33,11 +31,11 @@ window.onload = function () {
         });
     });
     $('#run_custom_task').click(function () {
-        run_task({custom_task: $('#command').val()});
+        runTask({custom_task: $('#command').val()});
         return false;
     });
 
-    function run_task(data) {
+    function runTask(data) {
         if (confirm('Are you sure?')) {
             $('#output_section').show();
             $('#task_output_container').text('Running...');

@@ -10,7 +10,9 @@ $this->title = 'Task Manager - Import/Export';
     <h2>Import</h2>
     <form method="post" id="parse_crontab_form">
         <div class="form-group">
-            <label for="crontab">Paste crontab content</label>
+            Example:
+            <pre>* * * * * cd /some/path; /usr/bin/php script.php \name\space\ClassName actionName 2>&1 > /dev/null</pre>
+            <label for="crontab">Paste crontab content</label><br>
             <textarea class="form-control" name="crontab" id="crontab"></textarea>
         </div>
         <div class="form-group">
@@ -40,5 +42,8 @@ $this->title = 'Task Manager - Import/Export';
             <input type="submit" value="Export" class="btn btn-primary">
         </div>
     </form>
-    <code id="export_result"></code>
+    <br>
+    <pre id="export_result">
+
+    </pre>
 </div>

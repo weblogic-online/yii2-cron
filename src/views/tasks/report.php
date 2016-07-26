@@ -36,7 +36,7 @@ $this->title = 'Task Manager - Report';
     <?php foreach ($report as $r): ?>
         <tr>
             <td><?= $r['command'] ?></td>
-            <td><?= $r['time_avg'] ?></td>
+            <td><?= round($r['time_avg'], 2) ?></td>
             <td><?= $r['completed'] ?></td>
             <td><?= $r['started'] ?></td>
             <td><?= $r['error'] ?></td>

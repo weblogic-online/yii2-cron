@@ -27,7 +27,7 @@ $this->title = 'Task Manager - Run list';
             <td><?= $r['task_id'] ?> </td>
             <td><?= $r['command'] ?></td>
             <td><?= $r['status'] ?></td>
-            <td><?= $r['execution_time'] ?></td>
+            <td><?= round($r['execution_time'], 4) ?></td>
             <td><?= $r['ts'] ?></td>
             <td>
                 <?php if (!empty($r['output'])): ?>
