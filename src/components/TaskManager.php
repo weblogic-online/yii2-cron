@@ -11,7 +11,7 @@ use Cron\CronExpression;
  */
 class TaskManager
 {
-    const CRON_LINE_REGEXP = '/(#?)(.*)cd.*php.*\.php\s+([\w\d-_]+)\s+([\w\d-_]+)\s*([\d\w-_\s]+)?(\d[\d>&\s]+)(.*)?/i';
+    const CRON_LINE_REGEXP = '/(#?)(.*)cd.*php.*\.php\s+([\\\\\w\d-_]+)\s+([\w\d-_]+)\s*([\d\w-_\s]+)?(\d[\d>&\s]+)(.*)?/i';
 
     /**
      * Edit and save TaskInterface object
@@ -181,7 +181,7 @@ class TaskManager
         $str     = '';
         $comment = $task->getComment();
         if (!empty($comment)) {
-            $str .= '#' . $comment . PHP_EOL;
+            $str .= '#' . $comment;
         }
         if (TaskInterface::TASK_STATUS_ACTIVE != $task->getStatus()) {
             $str .= '#';
@@ -190,6 +190,6 @@ class TaskManager
         $execCmd = $phpBin . ' ' . $inputFile . ' ' . $class . ' ' . $method . ' ' . implode(' ', $args);
         $str .= $task->getTime() . ' cd ' . $path . '; ' . $execCmd . ' 2>&1 > /dev/null';
 
-        return $str . PHP_EOL;
+        return $str;
     }
 }

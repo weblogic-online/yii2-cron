@@ -207,6 +207,7 @@ class TasksController extends Controller
             }
             \Yii::$app->session->setFlash($numUpdated ? 'success' : 'warning', \Yii::t('app', $numUpdated . ' tasks have been updated'));
         }
+        return \Yii::$app->response->redirect(Url::toRoute(['index']));
     }
 
     public function actionTasksReport()
