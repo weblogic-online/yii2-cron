@@ -46,10 +46,10 @@ $this->title = 'Task Manager - Task list';
             <td><?= $t->ts ?></td>
             <td><?= $t->ts_updated ?></td>
             <td>
-                <?= Html::a('Edit', ['/cron/tasks/task-edit', 'id' => $t->id]); ?>
+                <?= Html::a('Edit', ['task-edit', 'id' => $t->id]); ?>
             </td>
             <td>
-                <?= Html::a('Log', '/cron/tasks/task-log'); ?>
+                <?= Html::a('Log', 'task-log'); ?>
             </td>
             <td>
                 <?= Html::a('Run', '', ['id' => $t->id, 'class' => 'run_task']); ?>

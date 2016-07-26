@@ -5,6 +5,7 @@
  * @var string $content
  */
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $menu = [
     'index'        => 'Tasks list',
@@ -13,16 +14,21 @@ $menu = [
     'export'       => 'Import/Export',
     'tasks-report' => 'Report',
 ];
+
 ?>
-<script src="manager_actions.js"></script>
 <div class="col-lg-10">
+
     <h2>Cron tasks manager</h2>
 
+    <?php foreach (Yii::$app->session->getAllFlashes(true) as $key => $message) : ?>
+        <div class="alert alert-<?= $key ?>"><?= $message ?></div>
+    <?php endforeach; ?>
+
     <ul class="nav nav-tabs">
-        <?php foreach ($menu as $m => $text):
-            $class = (isset($_GET['m']) && ($_GET['m'] == $m)) ? 'active' : '';
+        <?php foreach ($menu as $route => $text):
+            $class = Yii::$app->controller->action->id == $route ? 'active' : '';
             ?>
-            <li class="<?= $class ?>"><?= Html::a($text, $m) ?></li>
+            <li class="<?= $class ?>"><?= Html::a($text, Url::toRoute($route)) ?></li>
         <?php endforeach; ?>
     </ul>
     <br>

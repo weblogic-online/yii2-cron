@@ -8,6 +8,7 @@ use rossmann\cron\components\TaskInterface;
 use rossmann\cron\components\TaskLoader;
 use rossmann\cron\components\TaskManager;
 use rossmann\cron\components\TaskRunner;
+use yii\helpers\Url;
 use yii\web\Controller;
 
 /**
@@ -76,14 +77,21 @@ class TasksController extends Controller
         }
     }
 
+    /**
+     * show the last 30 runs of the given task
+     * @return string
+     */
     public function actionTaskLog()
     {
-        $taskId = \Yii::$app->request->get('task_id');
-        $runs    = TaskRun::getLastRuns($taskId, 30);
+        $taskId = \Yii::$app->request->get('id');
+        $runs   = TaskRun::getLastRuns($taskId, 30);
 
         return $this->render('runs_list', ['runs' => $runs]);
     }
 
+    /**
+     * execute one or more selected tasks
+     */
     public function actionRunTask()
     {
         $tasks = \Yii::$app->request->post('id');
@@ -105,6 +113,9 @@ class TasksController extends Controller
         }
     }
 
+    /**
+     * display the next run dates for the given cron expression
+     */
     public function actionGetDates()
     {
         $time  = \Yii::$app->request->post('time');
@@ -138,9 +149,13 @@ class TasksController extends Controller
         }
     }
 
+    /**
+     * edit one single task
+     * @return string
+     */
     public function actionTaskEdit()
     {
-        $taskId = \Yii::$app->request->get('task_id');
+        $taskId = \Yii::$app->request->get('id');
         if ($taskId) {
             $task = Task::findOne($taskId);
         } else {
@@ -158,7 +173,8 @@ class TasksController extends Controller
                 $post['Task']['status'],
                 $post['Task']['comment']
             );
-            \Yii::$app->response->redirect(['/tasks/task-edit', 'task_id', $task->task_id]);
+            \Yii::$app->session->setFlash('success', 'The task has been saved');
+            return \Yii::$app->response->redirect(Url::toRoute(['index']));
         }
 
         return $this->render('task_edit', [
@@ -167,11 +183,16 @@ class TasksController extends Controller
         ]);
     }
 
+    /**
+     * set the status of one ore more tasks
+     * called by the mass update function in the list view
+     */
     public function actionTasksUpdate()
     {
-        $taskId = \Yii::$app->request->post('task_id');
-        if ($taskId) {
-            $tasks = Task::findAll($taskId);
+        $taskIds = \Yii::$app->request->post('id');
+        if ($taskIds) {
+            $tasks = Task::findAll($taskIds);
+            $numUpdated = 0;
             foreach ($tasks as $t) {
                 /**
                  * @var Task $t
@@ -182,8 +203,9 @@ class TasksController extends Controller
                     'Delete'  => TaskInterface::TASK_STATUS_DELETED,
                 ];
                 $t->setStatus($actionStatus[\Yii::$app->request->post('action')]);
-                $t->save();
+                $numUpdated += $t->save();
             }
+            \Yii::$app->session->setFlash($numUpdated ? 'success' : 'warning', \Yii::t('app', $numUpdated . ' tasks have been updated'));
         }
     }
 
