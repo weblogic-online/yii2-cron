@@ -73,11 +73,11 @@ class Task extends ActiveRecord implements TaskInterface
         SUM(CASE WHEN tr.status = 'error' THEN 1 ELSE 0 END) AS error,
         round(AVG(tr.execution_time),2) AS time_avg,
         count(*) AS runs
-        FROM task_runs AS tr
+        FROM task_runs tr
         LEFT JOIN tasks t ON t.id = tr.task_id
         WHERE " . self::getDateConstraint($sqlDialect) . "
-        GROUP BY command
-        ORDER BY tr.task_id";
+        GROUP BY t.command, t.id
+        ORDER BY t.id";
 
         return \Yii::$app->db->createCommand($sql, [
             ':date_begin' => $dateBegin,
