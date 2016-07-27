@@ -25,14 +25,14 @@ class TasksController extends Controller
 
     /**
      * @param string $id
-     * @param \yii\base\Module $module
+     * @param \rossmann\cron\CronModule $module
      * @param array $config
      */
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config);
-        self::$tasksControllersFolder = __DIR__ . '/../models/';
-        self::$tasksNamespace         = 'rossmann\\cron\\models\\';
+        self::$tasksControllersFolder = $module->tasksControllersFolder;
+        self::$tasksNamespace         = $module->tasksNamespace;
         TasksAsset::register($this->view);
     }
 
@@ -166,7 +166,7 @@ class TasksController extends Controller
          */
         $post = \Yii::$app->request->post();
         if ($task->load($post) && $task->validate()) {
-            $task = TaskManager::editTask(
+            TaskManager::editTask(
                 $task,
                 $post['Task']['time'],
                 $post['Task']['command'],

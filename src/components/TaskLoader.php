@@ -72,7 +72,7 @@ class TaskLoader
             $files = scandir($path);
             foreach ($files as $file) {
                 if (preg_match('/^([A-Z]\w+)\.php$/', $file, $match)) {
-                    $namespace     = isset($namespacesList[$pathIndex]) ? $namespacesList[$pathIndex] : '';
+                    $namespace     = isset($namespacesList[$pathIndex]) ? $namespacesList[$pathIndex] . '\\' : '';
                     $controllers[] = $namespace . $match[1];
                 }
             }

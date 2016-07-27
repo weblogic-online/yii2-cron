@@ -29,6 +29,18 @@ class CronModule extends \yii\base\Module
     public $sqlDialect = 'MySQL';
 
     /**
+     * in which path to look for controller classes containing task actions
+     * @var string|array
+     */
+    public $tasksControllersFolder = [];
+
+    /**
+     * the namespace of the controller classes found in $tasksControllersFolder
+     * @var string|array
+     */
+    public $tasksNamespace = [];
+
+    /**
      * @throws Exception
      */
     public function init()
