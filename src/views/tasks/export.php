@@ -3,16 +3,19 @@
  * @author mult1mate
  * @since 31.12.2015
  */
+$this->title = Yii::t('cron', 'Import/Export');
+$this->params['breadcrumbs'][] = ['label' => 'Task Manager', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+
 echo $this->render('tasks_template');
-$this->title = 'Task Manager - Import/Export';
 ?>
 <div class="col-lg-6">
     <h2>Import</h2>
     <form method="post" id="parse_crontab_form">
         <div class="form-group">
-            Example:
+            <?=Yii::t('cron', 'Example')?>
             <pre>* * * * * cd /some/path; /usr/bin/php script.php \name\space\ClassName actionName 2>&1 > /dev/null</pre>
-            <label for="crontab">Paste crontab content</label><br>
+            <label for="crontab"><?=Yii::t('cron', 'Paste crontab content')?></label><br>
             <textarea class="form-control" name="crontab" id="crontab"></textarea>
         </div>
         <div class="form-group">
@@ -25,18 +28,18 @@ $this->title = 'Task Manager - Import/Export';
 
 <div class="col-lg-6">
     <h2>Export</h2>
-    <form class="form-inline" id="export_form">
+    <form id="export_form">
         <div class="form-group">
-            <label class="control-label" for="php">Path to PHP</label>
-            <input type="text" class="form-control" name="php" id="php" value="/usr/bin/php" style="width: 100px;">
+            <label class="control-label" for="php"><?=Yii::t('cron', 'Path to PHP')?></label><br>
+            <input type="text" class="form-control" name="php" id="php" value="php">
         </div>
         <div class="form-group">
-            <label class="control-label" for="folder">Path to folder</label>
+            <label class="control-label" for="folder"><?=Yii::t('cron', 'Path to folder')?></label><br>
             <input type="text" class="form-control" name="folder" id="folder" value="">
         </div>
         <div class="form-group">
-            <label class="control-label" for="file">php file</label>
-            <input type="text" class="form-control" name="file" id="file" value="index.php" style="width: 100px;">
+            <label class="control-label" for="file"><?=Yii::t('cron', 'php file')?></label><br>
+            <input type="text" class="form-control" name="file" id="file" value="index.php">
         </div>
         <div class="form-group">
             <input type="submit" value="Export" class="btn btn-primary">
@@ -47,3 +50,4 @@ $this->title = 'Task Manager - Import/Export';
 
     </pre>
 </div>
+<div class="clearfix"></div>

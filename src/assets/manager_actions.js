@@ -6,22 +6,26 @@ window.onload = function () {
         return false;
     });
     $('#select_all').change(function () {
-        if ($(this).prop('checked'))
+        if ($(this).prop('checked')) {
             $('.task_checkbox').prop('checked', 'checked');
-        else
+        } else {
             $('.task_checkbox').prop('checked', '');
+        }
     });
-    $('#execute_action').click(function () {
-        var action = $('#action').find('option:selected').val();
+    $('#execute_action').click(function (e) {
+        e.preventDefault();
+        var mode = $('#mode').find('option:selected').val();
         var tasks = $('.task_checkbox:checked').map(function () {
             return $(this).val();
         }).get();
-        if ('Run' == action) {
+        if ('Run' == mode) {
             runTask({id: tasks});
-            return false;
         } else {
-            return true;
+            $.post($(this).prop("form").action, {id: tasks, mode: mode}, function () {
+                window.location.reload();
+            });
         }
+        return false;
     });
     $('.show_output').click(function () {
         $('#output_container').html('Loading...');
@@ -62,9 +66,9 @@ window.onload = function () {
     $time.change(function () {
         getRunDates();
     });
-    if ($time.length)
+    if ($time.length) {
         getRunDates();
-
+    }
     $('#times').change(function () {
         $time.val($(this).val());
         getRunDates();

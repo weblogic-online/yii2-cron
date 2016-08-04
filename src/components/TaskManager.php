@@ -77,8 +77,15 @@ class TaskManager
     {
         if (preg_match('/([@\w\\\\]+)::(\w+)\((.*)\)/', $command, $match)) {
             $params = explode(',', $match[3]);
+            // trim params and strip quotes
+            foreach ($params as &$param) {
+                $param = trim($param);
+                if (($param[0] == "'" AND substr($param, -1) == "'") OR ($param[0] == '"' AND substr($param, -1) == '"')) {
+                    $param = substr($param, 1, -1);
+                }
+            }
             if ((1 == count($params)) && ('' == $params[0])) {
-                //prevents to pass an empty string
+                // prevents to pass an empty string
                 $params[0] = null;
             }
 
@@ -114,23 +121,23 @@ class TaskManager
                 try {
                     CronExpression::factory($matches[2]);
                 } catch (\Exception $e) {
-                    $task[1]     = 'Time expression is not valid';
+                    $task[1]     = \Yii::t('cron', 'Time expression is not valid');
                     $task[2]     = $matches[2];
                     $tasks[] = $task;
                     continue;
                 }
                 $taskObject = self::createTaskWithCrontabLine($taskClass, $matches);
 
-                $task[1] = 'Saved';
+                $task[1] = \Yii::t('cron', 'Saved');
                 $task[2] = $taskObject;
 
                 $comment = null;
             } elseif (preg_match('/#([\w\d\s]+)/i', $cronElement, $matches)) {
                 $comment = trim($matches[1]);
-                $task[1]   = 'Comment';
+                $task[1]   = \Yii::t('cron', 'Comment');
                 $task[2]   = $comment;
             } else {
-                $task[1] = 'Not matched';
+                $task[1] = \Yii::t('cron', 'Not matched');
             }
             $tasks[] = $task;
         }

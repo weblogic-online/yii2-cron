@@ -46,5 +46,12 @@ class CronModule extends \yii\base\Module
     public function init()
     {
         parent::init();
+        if (!isset(\Yii::$app->i18n->translations['cron'])) {
+            \Yii::$app->i18n->translations['cron'] = [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'sourceLanguage' => 'en',
+                'basePath' => __DIR__ . '/messages'
+            ];
+        }
     }
 }

@@ -135,10 +135,13 @@ class TaskRunner
             if (!method_exists($obj, $method)) {
                 throw new TaskManagerException('method ' . $method . ' not found in class ' . $class);
             }
-            return call_user_func_array([$obj, $method], $args);
+            $result = call_user_func_array([$obj, $method], $args);
+            return $result;
 
         } catch (\Exception $e) {
-            static::log('error', 'Exception while executing the task command: ' . get_class($e) . ': ' . PHP_EOL . $e->getMessage());
+            static::log('error', 'Exception while executing the task command: ' . get_class($e) . ': '
+                . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()
+            );
             return false;
         }
     }

@@ -23,6 +23,24 @@ use yii\db\ActiveRecord;
  */
 class Task extends ActiveRecord implements TaskInterface
 {
+
+    /**
+     * @return array
+     */
+    public function attributeLabels() {
+        return [
+            'id' => \Yii::t('cron', 'ID'),
+            'time' => \Yii::t('cron', 'Time expression'),
+            'command' => \Yii::t('cron', 'Command'),
+            'status' => \Yii::t('cron', 'Status'),
+            'comments' => \Yii::t('cron', 'Comment'),
+            'comment' => \Yii::t('cron', 'Comment'),
+            'ts' => \Yii::t('cron', 'Created'),
+            'ts_updated' => \Yii::t('cron', 'Updated'),
+            'locked' => \Yii::t('cron', 'Locked'),
+        ];
+    }
+
     /**
      * @return string
      */

@@ -109,7 +109,7 @@ class TasksController extends Controller
             $result = TaskRunner::parseAndRunCommand($customTask);
             echo $result ? 'success' : 'failed';
         } else {
-            echo 'empty task id';
+            echo \Yii::t('cron', 'empty task id');
         }
     }
 
@@ -119,10 +119,13 @@ class TasksController extends Controller
     public function actionGetDates()
     {
         $time  = \Yii::$app->request->post('time');
+        if (empty($time)) {
+            echo 'n/a';
+            return;
+        }
         $dates = TaskRunner::getRunDates($time);
         if (empty($dates)) {
-            echo 'Invalid expression';
-
+            echo \Yii::t('cron', 'Invalid expression');
             return;
         }
         echo '<ul>';
@@ -145,7 +148,7 @@ class TasksController extends Controller
              */
             echo htmlentities($run->getOutput());
         } else {
-            echo 'empty task run id';
+            echo \Yii::t('cron', 'empty task run id');
         }
     }
 
@@ -173,7 +176,7 @@ class TasksController extends Controller
                 $post['Task']['status'],
                 $post['Task']['comment']
             );
-            \Yii::$app->session->setFlash('success', 'The task has been saved');
+            \Yii::$app->session->setFlash('success', \Yii::t('cron', 'The task has been saved'));
             return \Yii::$app->response->redirect(Url::toRoute(['index']));
         }
 
@@ -190,22 +193,26 @@ class TasksController extends Controller
     public function actionTasksUpdate()
     {
         $taskIds = \Yii::$app->request->post('id');
-        if ($taskIds) {
+        $mode = \Yii::$app->request->post('mode');
+        $modes = [
+            'Enable'  => TaskInterface::TASK_STATUS_ACTIVE,
+            'Disable' => TaskInterface::TASK_STATUS_INACTIVE,
+            'Delete'  => TaskInterface::TASK_STATUS_DELETED,
+        ];
+        if ($taskIds AND isset($modes[$mode])) {
             $tasks = Task::findAll($taskIds);
             $numUpdated = 0;
             foreach ($tasks as $t) {
-                /**
-                 * @var Task $t
-                 */
-                $actionStatus = [
-                    'Enable'  => TaskInterface::TASK_STATUS_ACTIVE,
-                    'Disable' => TaskInterface::TASK_STATUS_INACTIVE,
-                    'Delete'  => TaskInterface::TASK_STATUS_DELETED,
-                ];
-                $t->setStatus($actionStatus[\Yii::$app->request->post('action')]);
+                /** @var Task $t */
+                $t->setStatus($modes[$mode]);
                 $numUpdated += $t->save();
             }
-            \Yii::$app->session->setFlash($numUpdated ? 'success' : 'warning', \Yii::t('app', $numUpdated . ' tasks have been updated'));
+            \Yii::$app->session->setFlash(
+                $numUpdated ? 'success' : 'warning',
+                \Yii::t('cron', '{n,plural,=0{no tasks have} =1{one task has} other{# tasks have}} been updated', ['n' => $numUpdated]),
+                false
+            );
+            return "";
         }
         return \Yii::$app->response->redirect(Url::toRoute(['index']));
     }
