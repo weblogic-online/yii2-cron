@@ -53,7 +53,7 @@ class TaskRun extends ActiveRecord implements TaskRunInterface
      */
     public static function getLast($taskId) {
         $last = self::find()
-            ->where(['task_id' => ':task_id'], [':task_id' => $taskId])
+            ->where('task_id = :task_id', [':task_id' => $taskId])
             ->orderBy('id DESC')->one();
         return $last;
     }
