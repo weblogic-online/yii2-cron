@@ -24,6 +24,7 @@ echo $this->render('tasks_template');
         <th><?=Yii::t('cron', 'Time')?></th>
         <th><?=Yii::t('cron', 'Command')?></th>
         <th><?=Yii::t('cron', 'Status')?></th>
+        <th><?=Yii::t('cron', 'Locked')?></th>
         <th><?=Yii::t('cron', 'Comment')?></th>
         <th><?=Yii::t('cron', 'Created')?></th>
         <th><?=Yii::t('cron', 'Updated')?></th>
@@ -46,6 +47,7 @@ echo $this->render('tasks_template');
             <td><?= $t->time ?></td>
             <td><?= $t->command ?></td>
             <td class="<?= $statusClass ?>"><?= $t->status ?></td>
+            <td><?= $t->locked ?></td>
             <td><?= $t->comment ?></td>
             <td><?= $t->ts ?></td>
             <td><?= $t->ts_updated ?></td>
