@@ -90,6 +90,8 @@ class Task extends ActiveRecord implements TaskInterface
         SUM(CASE WHEN tr.status = 'completed' THEN 1 ELSE 0 END) AS completed,
         SUM(CASE WHEN tr.status = 'error' THEN 1 ELSE 0 END) AS error,
         round(AVG(tr.execution_time),2) AS time_avg,
+        round(MIN(tr.execution_time),2) AS time_min,
+        round(MAX(tr.execution_time),2) AS time_max,
         count(*) AS runs
         FROM task_runs tr
         LEFT JOIN tasks t ON t.id = tr.task_id

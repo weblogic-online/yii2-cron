@@ -78,6 +78,8 @@ return [
     'Date begin' => '',
     'Date end' => '',
     'Avg. time' => '',
+    'Min. time' => '',
+    'Max. time' => '',
     'Task' => '',
     'Success' => '',
     'Started' => '',

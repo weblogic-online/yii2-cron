@@ -84,6 +84,8 @@ return [
     'Date begin' => 'Startdatum',
     'Date end' => 'Enddatum',
     'Avg. time' => '&Oslash; Ausführungszeit',
+    'Min. time' => 'Kürzeste',
+    'Max. time' => 'Längste',
     'Show output' => 'Ausgabe anzeigen',
     'Task run output' => 'Task Ausgabe',
     'Loading...' => '',
