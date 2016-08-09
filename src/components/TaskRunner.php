@@ -65,24 +65,29 @@ class TaskRunner
         } else {
             $lastRun = TaskRun::getLast($task->getId());
             if (!$lastRun) {
-                static::log('error', 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired, '
-                . 'but no previous run could be found');
+                $errorMessage = 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired, '
+                    . 'but no previous run could be found';
+                static::log('error', $errorMessage);
             } elseif ($lastRun->status == TaskRun::RUN_STATUS_STARTED) {
                 if ($lastRun->getTs() < date('Y-m-d H:i:s', time() - 3600)) {
-                    static::log('error', 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired, '
-                        . 'and the last run is in "running" state since more than one hour. Check if manual action is required.');
+                    $errorMessage = 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired, '
+                        . 'and the last run is in "running" state since more than one hour. Check if manual action is required.';
+                    static::log('error', $errorMessage);
                 } else {
-                    static::log('info', 'Task with ID ' . $task->getId() . ' cannot be run because it is already running.');
+                    $errorMessage = 'Task with ID ' . $task->getId() . ' cannot be run because it is already running.';
+                    static::log('info', $errorMessage);
                 }
             } elseif ($lastRun->status == TaskRun::RUN_STATUS_ERROR) {
-                static::log('error', 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired, '
-                    . 'and the last run ended in an error state. Check if the lock has to be released manually.');
+                $errorMessage = 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired, '
+                    . 'and the last run ended in an error state. Check if the lock has to be released manually.';
+                static::log('error', $errorMessage);
             } else {
-                static::log('error', 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired '
+                $errorMessage = 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired '
                 . 'although the last run is marked as completed. If you see this message only once, the reason might be '
-                . 'a race condition, in that case no action is required.');
+                . 'a race condition, in that case no action is required.';
+                static::log('error', $errorMessage);
             }
-            return false;
+            return $errorMessage;
         }
 
         ob_start();
