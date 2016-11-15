@@ -1,6 +1,13 @@
 window.onload = function () {
+
+    // If pretty URLs are enabled ('urlManager' => ['enablePrettyUrl' => 'true'])
+    // one can use relative URLs, so controller_url can be emtpy.
+    // But when the index action is called implicitly (when no action is given in the URL)
+    // the generated URL for the action run-task is missing the controller name,
+    // so this URL has to be defined in 'urlManager' => 'rules'
     var controller_url = '';
-    //tasks list page
+
+    // tasks list page
     $('.run_task').click(function () {
         runTask({id: $(this).attr('id')});
         return false;

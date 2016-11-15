@@ -55,7 +55,7 @@ echo $this->render('tasks_template');
                 <?= Html::a(Yii::t('cron', 'Edit'), ['task-edit', 'id' => $t->id]); ?>
             </td>
             <td>
-                <?= Html::a(Yii::t('cron', 'Log'), 'task-log'); ?>
+                <?= Html::a(Yii::t('cron', 'Log'), ['task-log']); ?>
             </td>
             <td>
                 <?= Html::a(Yii::t('cron', 'Run'), '', ['id' => $t->id, 'class' => 'run_task']); ?>
