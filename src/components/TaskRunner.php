@@ -20,7 +20,9 @@ class TaskRunner
      */
     public static function checkAndRunTasks($tasks)
     {
+        $invocationTimestamp = time();
         $invocationDatetime = date('Y-m-d H:i:00');
+
         foreach ($tasks as $task) {
             /**
              * @var TaskInterface $task
@@ -35,8 +37,11 @@ class TaskRunner
                 static::runTask($task);
             } else {
                 // The task is not due exactly now, but maybe another long running task from a previous invocation
-                // of the TaskRunner is blocking the execution queue. Check if the task was run since its last due date:
-                $lastRunTs = TaskRun::getLast($task->getId())->getTs();
+                // of the TaskRunner is blocking the execution queue. Check if the task was run on or since its last due date:
+                $lastRun = TaskRun::getLast($task->getId());
+                // if the task has never run before, we fake a last execution timestamp in the future,
+                // because we do not want all jobs to run when the system is deployed for the first time
+                $lastRunTs = !empty($lastRun) ? $lastRun->getTs() : $invocationTimestamp + 1;
                 $lastDue = $cron->getPreviousRunDate($invocationDatetime);
                 if ($lastRunTs < $lastDue->format('U')) {
                     static::log('info', 'Task with ID ' . $task->getId() . ' was not executed on its last due date ('
@@ -83,8 +88,8 @@ class TaskRunner
                 static::log('error', $errorMessage);
             } else {
                 $errorMessage = 'Task with ID ' . $task->getId() . ' cannot be run because a lock could not be acquired '
-                . 'although the last run is marked as completed. If you see this message only once, the reason might be '
-                . 'a race condition, in that case no action is required.';
+                    . 'although the last run is marked as completed. If you see this message only once, the reason might be '
+                    . 'a race condition, in that case no action is required.';
                 static::log('error', $errorMessage);
             }
             return $errorMessage;
@@ -114,7 +119,19 @@ class TaskRunner
         $time    = round(($timeEnd - $timeBegin), 2);
         $run->setExecutionTime($time);
 
-        $run->saveTaskRun();
+        try {
+            $run->saveTaskRun();
+        } catch (\Exception $e) {
+            /**
+             * If this process had to wait a long time for the task to complete, the database server may have
+             * closed the connection. For example: Oracle ORA-03113: end-of-file on communication channel
+             * If this happens, we try to open a new connection
+             */
+            \Yii::$app->db->close();
+            \Yii::$app->db->forceReconnect = true;
+            \Yii::$app->db->open();
+            $run->saveTaskRun();
+        }
 
         $task->releaseLock();
 
