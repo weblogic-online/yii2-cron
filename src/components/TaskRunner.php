@@ -122,13 +122,15 @@ class TaskRunner
         try {
             $run->saveTaskRun();
         } catch (\Exception $e) {
-            /**
-             * If this process had to wait a long time for the task to complete, the database server may have
-             * closed the connection. For example: Oracle ORA-03113: end-of-file on communication channel
-             * If this happens, we try to open a new connection
-             */
+            // If this process had to wait a long time for the task to complete, the database server may have
+            // closed the connection. For example: Oracle ORA-03113: end-of-file on communication channel
+            // If this happens, we try to open a new connection
             \Yii::$app->db->close();
-            \Yii::$app->db->forceReconnect = true;
+            if (property_exists(\Yii::$app->db, 'forceReconnect')) {
+                // if PHP just reuses the defunct connection (happens with Oracle), you have to extend yii\db\Connection
+                // and implement a mechanism in createPdoInstance() which forces a new connection
+                \Yii::$app->db->forceReconnect = true;
+            }
             \Yii::$app->db->open();
             $run->saveTaskRun();
         }
