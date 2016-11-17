@@ -41,7 +41,7 @@ class TaskRunner
                 $lastRun = TaskRun::getLast($task->getId());
                 // if the task has never run before, we fake a last execution timestamp in the future,
                 // because we do not want all jobs to run when the system is deployed for the first time
-                $lastRunTs = !empty($lastRun) ? $lastRun->getTs() : $invocationTimestamp + 1;
+                $lastRunTs = !empty($lastRun) ? strtotime($lastRun->getTs()) : $invocationTimestamp + 1;
                 $lastDue = $cron->getPreviousRunDate($invocationDatetime);
                 if ($lastRunTs < $lastDue->format('U')) {
                     static::log('info', 'Task with ID ' . $task->getId() . ' was not executed on its last due date ('
