@@ -32,13 +32,30 @@ class TaskRunner
             }
 
             $cron = CronExpression::factory($task->getTime());
+            $lastRun = TaskRun::getLast($task->getId());
 
             if ($cron->isDue($invocationDatetime)) {
-                static::runTask($task);
+                $runTask = false;
+                // task never ran before
+                if (empty($lastRun)) {
+                    $runTask = true;
+                } else {
+                    // task ran before, but not since this script was started
+                    if ($invocationTimestamp > strtotime($lastRun->getTs())) {
+                        $runTask = true;
+                    } else {
+                        static::log('info', 'Task with ID ' . $task->getId() . ' ran since this script was started');
+                        static::log('info', 'Task with ID ' . $task->getId() . ', invocation timestamp: ' . $invocationTimestamp
+                            . '(' . date('Y-m-d H:i:s', $invocationTimestamp) . '), last run timestamp:  ' . strtotime($lastRun->getTs()). '(' . $lastRun->getTs() . ')');
+                    }
+                }
+                if (true === $runTask) {
+                    static::log('info', 'Task with ID ' . $task->getId() . ' is due');
+                    static::runTask($task);
+                }
             } else {
                 // The task is not due exactly now, but maybe another long running task from a previous invocation
                 // of the TaskRunner is blocking the execution queue. Check if the task was run on or since its last due date:
-                $lastRun = TaskRun::getLast($task->getId());
                 // if the task has never run before, we fake a last execution timestamp in the future,
                 // because we do not want all jobs to run when the system is deployed for the first time
                 $lastRunTs = !empty($lastRun) ? strtotime($lastRun->getTs()) : $invocationTimestamp + 1;
