@@ -79,10 +79,7 @@ class TaskManager
             $params = explode(',', $match[3]);
             // trim params and strip quotes
             foreach ($params as &$param) {
-                $param = trim($param);
-                if (($param[0] == "'" AND substr($param, -1) == "'") OR ($param[0] == '"' AND substr($param, -1) == '"')) {
-                    $param = substr($param, 1, -1);
-                }
+                $param = trim($param, " \"'\t\n\r\0\x0B");
             }
             if ((1 == count($params)) && ('' == $params[0])) {
                 // prevents to pass an empty string
