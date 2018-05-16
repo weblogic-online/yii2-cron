@@ -9,8 +9,8 @@ use yii\helpers\Url;
 
 $menu = [
     'index'        => Yii::t('cron', 'Tasks list'),
-    'task-edit'    => Yii::t('cron', 'Add new/edit task'),
-    'task-log'     => Yii::t('cron', 'Logs'),
+    'update'    => Yii::t('cron', 'Add new/edit task'),
+    'show-log'     => Yii::t('cron', 'Logs'),
     'export'       => Yii::t('cron', 'Import/Export'),
     'tasks-report' => Yii::t('cron', 'Report'),
 ];

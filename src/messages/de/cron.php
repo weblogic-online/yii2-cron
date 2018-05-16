@@ -91,4 +91,7 @@ return [
     'Loading...' => '',
     'Locked' => 'Gesperrt',
     'Example' => 'Beispiel',
+    'invalid_command' => 'ungültiger Befehl',
+    'confirm_changes' => 'Änderungen speichern?',
+    'confirm_run' => 'Job ausführen?',
 ];

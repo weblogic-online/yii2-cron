@@ -47,15 +47,13 @@ window.onload = function () {
     });
 
     function runTask(data) {
-        if (confirm('Are you sure?')) {
-            $('#output_section').show();
-            $('#task_output_container').text('Running...');
-            $.post(controller_url + 'run-task', data, function (data) {
-                $('#task_output_container').html(data);
-            }).fail(function (xhr, textStatus, errorThrown) {
-                alert(xhr.responseText);
-            });
-        }
+        $('#output_section').show();
+        $('#task_output_container').text('Running...');
+        $.post(controller_url + 'run-task', data, function (data) {
+            $('#task_output_container').html(data);
+        }).fail(function (xhr, textStatus, errorThrown) {
+            alert(xhr.responseText);
+        });
     }
 
     //edit page

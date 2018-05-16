@@ -39,7 +39,7 @@ $form        = ActiveForm::begin([]);
     }
     ?>
     <?= $form->field($task, 'status')->dropDownList($statuses) ?>
-    <?= $form->field($task, 'comment') ?>
+    <?= $form->field($task, 'comments') ?>
 
     <button type="submit" class="btn btn-primary"><?=Yii::t('cron', 'Save')?></button>
 

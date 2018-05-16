@@ -2,8 +2,11 @@
 
 namespace rossmann\cron\models;
 
+use DateTime;
+use DateTimeZone;
 use rossmann\cron\components\TaskInterface;
 use rossmann\cron\components\TaskRunInterface;
+use rossmann\cron\components\validation\CommandValidator;
 use rossmann\cron\CronModule;
 use yii\db\ActiveRecord;
 
@@ -12,7 +15,7 @@ use yii\db\ActiveRecord;
  * @author rossmann-it
  * @since 20.12.2015
  *
- * @property int    $id
+ * @property int $id
  * @property string $time
  * @property string $command
  * @property string $status
@@ -21,8 +24,7 @@ use yii\db\ActiveRecord;
  * @property string $ts_updated
  * @property int $locked
  */
-class Task extends ActiveRecord implements TaskInterface
-{
+class Task extends ActiveRecord implements TaskInterface {
 
     /**
      * @return array
@@ -44,17 +46,40 @@ class Task extends ActiveRecord implements TaskInterface
     /**
      * @return string
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%tasks}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules() {
+        return [
+            [['time', 'command', 'status'], 'required'],
+            [['time', 'status'], 'string', 'max' => 64],
+            [['command', 'comments'], 'string', 'max' => 256],
+            // nur öffnende Klammer verboten, falls für die Ausgabeumleitung die schließende benötigt wird
+//         /   [['comments', 'time', 'command', 'status'], 'match', 'pattern' => '/[\<]+/', 'not' => true],
+            ['command', 'match', 'pattern' => '/([@\w\\\\]+)::(\w+)\((.*)\)/'],
+            ['command', CommandValidator::className(), 'skipOnEmpty' => false],
+            ['ts_updated', 'filter', 'filter' => function () {
+                $date = new DateTime('now', new DateTimeZone("UTC"));
+                return $date->format('Y-m-d H:i:s');
+            }],
+            ['ts_updated', 'date', 'format' => 'php:Y-m-d H:i:s'],
+            ['ts', 'default', 'value' => function () {
+                $date = new DateTime('now', new DateTimeZone("UTC"));
+                return $date->format('Y-m-d H:i:s');
+            }],
+            ['ts', 'date', 'format' => 'php:Y-m-d H:i:s']
+        ];
     }
 
     /**
      * @param int $taskId
      * @return null|static
      */
-    public static function taskGet($taskId)
-    {
+    public static function taskGet($taskId) {
         return self::findOne($taskId);
     }
 
@@ -62,8 +87,7 @@ class Task extends ActiveRecord implements TaskInterface
      * List of all tasks
      * @return array|ActiveRecord[]|TaskInterface[] the query results. If the query results in nothing, an empty array will be returned.
      */
-    public static function getList()
-    {
+    public static function getList() {
         return self::find()->where(['not', ['status' => TaskInterface::TASK_STATUS_DELETED]])
             ->orderBy('status, id')->all();
     }
@@ -71,8 +95,7 @@ class Task extends ActiveRecord implements TaskInterface
     /**
      * @return static[]
      */
-    public static function getAll()
-    {
+    public static function getAll() {
         return self::find()->all();
     }
 
@@ -83,8 +106,7 @@ class Task extends ActiveRecord implements TaskInterface
      * @param string $sqlDialect
      * @return array
      */
-    public static function getReport($dateBegin, $dateEnd, $sqlDialect = CronModule::DIALECT_MYSQL)
-    {
+    public static function getReport($dateBegin, $dateEnd, $sqlDialect = CronModule::DIALECT_MYSQL) {
         $sql = "SELECT t.command, t.id,
         SUM(CASE WHEN tr.status = 'started' THEN 1 ELSE 0 END) AS started,
         SUM(CASE WHEN tr.status = 'completed' THEN 1 ELSE 0 END) AS completed,
@@ -101,7 +123,7 @@ class Task extends ActiveRecord implements TaskInterface
 
         return \Yii::$app->db->createCommand($sql, [
             ':date_begin' => $dateBegin,
-            ':date_end'   => $dateEnd,
+            ':date_end' => $dateEnd,
         ])->queryAll();
     }
 
@@ -128,44 +150,28 @@ class Task extends ActiveRecord implements TaskInterface
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
-        return [
-            [['time', 'command', 'status'], 'required'],
-            [['time', 'status'], 'string', 'max' => 64],
-            [['command'], 'string', 'max' => 256],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function taskDelete()
-    {
+    public function taskDelete() {
         return $this->delete();
     }
 
     /**
      * @inheritdoc
      */
-    public function taskSave()
-    {
+    public function taskSave() {
         return $this->save();
     }
 
     /**
      * @return Task
      */
-    public static function createNew()
-    {
+    public static function createNew() {
         return new self();
     }
 
     /**
      * @return TaskRunInterface
      */
-    public function createTaskRun()
-    {
+    public function createTaskRun() {
         $taskRun = new TaskRun();
         $taskRun->setTaskId($this->id);
         return $taskRun;
@@ -174,104 +180,91 @@ class Task extends ActiveRecord implements TaskInterface
     /**
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getTime()
-    {
+    public function getTime() {
         return $this->time;
     }
 
     /**
      * @param string $time
      */
-    public function setTime($time)
-    {
+    public function setTime($time) {
         $this->time = $time;
     }
 
     /**
      * @return string
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
 
     /**
      * @param string $status
      */
-    public function setStatus($status)
-    {
+    public function setStatus($status) {
         $this->status = $status;
     }
 
     /**
      * @return string
      */
-    public function getCommand()
-    {
+    public function getCommand() {
         return $this->command;
     }
 
     /**
      * @param string $command
      */
-    public function setCommand($command)
-    {
+    public function setCommand($command) {
         $this->command = $command;
     }
 
     /**
      * @return string
      */
-    public function getComment()
-    {
+    public function getComment() {
         return $this->comments;
     }
 
     /**
      * @param string $comment
      */
-    public function setComment($comment)
-    {
+    public function setComment($comment) {
         $this->comments = $comment;
     }
 
     /**
      * @return string
      */
-    public function getTs()
-    {
+    public function getTs() {
         return $this->ts;
     }
 
     /**
      * @param string $timestamp
      */
-    public function setTs($timestamp)
-    {
+    public function setTs($timestamp) {
         $this->ts = $timestamp;
     }
 
     /**
      * @return string
      */
-    public function getTsUpdated()
-    {
+    public function getTsUpdated() {
         return $this->ts_updated;
     }
 
     /**
      * @param string $timestamp
      */
-    public function setTsUpdated($timestamp)
-    {
+    public function setTsUpdated($timestamp) {
         $this->ts_updated = $timestamp;
     }
 
@@ -279,7 +272,7 @@ class Task extends ActiveRecord implements TaskInterface
      * @return bool
      */
     public function isLocked() {
-        return (bool) $this->locked;
+        return (bool)$this->locked;
     }
 
     /**
@@ -310,7 +303,7 @@ class Task extends ActiveRecord implements TaskInterface
         try {
             // get the current lock status and lock the row in the database
             $query = $db->createCommand(
-                'SELECT locked FROM ' . self::tableName(). ' WHERE id = :id'. ' FOR UPDATE',
+                'SELECT locked FROM ' . self::tableName() . ' WHERE id = :id' . ' FOR UPDATE',
                 [':id' => $this->id]
             );
             $locked = $query->queryScalar();
@@ -324,9 +317,6 @@ class Task extends ActiveRecord implements TaskInterface
             } elseif ($locked === 0 OR $locked === '0') {
                 // task was found and is not locked
                 $this->locked = 1;
-                // make sure that this attribute is written, even when Yii does not think it is a "dirty attribute".
-				// this can happen, when the task was initially locked, but another process released the lock in the meantime.
-                $this->markAttributeDirty('locked');
                 $result = $this->update();
                 $transaction->commit();
                 if ($result > 0) {
