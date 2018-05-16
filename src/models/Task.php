@@ -317,6 +317,9 @@ class Task extends ActiveRecord implements TaskInterface {
             } elseif ($locked === 0 OR $locked === '0') {
                 // task was found and is not locked
                 $this->locked = 1;
+                // make sure that this attribute is written, even when Yii does not think it is a "dirty attribute".
+                // this can happen, when the task was initially locked, but another process released the lock in the meantime.
+                $this->markAttributeDirty('locked');
                 $result = $this->update();
                 $transaction->commit();
                 if ($result > 0) {
