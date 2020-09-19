@@ -1,21 +1,22 @@
 <?php
-namespace rossmann\cron\helpers;
 
-/**
- * Class DbHelper
- * Contains common sql queries
- * @author  mult1mate
- * @since 05.01.2016
- */
-class DbHelper
-{
+    namespace weblogic\cron\helpers;
+
     /**
-     * returns query for summary report
-     * @return string
+     * Class DbHelper
+     * Contains common sql queries
+     * @author  mult1mate
+     * @since 05.01.2016
      */
-    public static function getReportSql()
+    class DbHelper
     {
-        return "
+        /**
+         * returns query for summary report
+         * @return string
+         */
+        public static function getReportSql()
+        {
+            return "
         SELECT t.command, t.task_id,
         SUM(CASE WHEN tr.status = 'started' THEN 1 ELSE 0 END) AS started,
         SUM(CASE WHEN tr.status = 'completed' THEN 1 ELSE 0 END) AS completed,
@@ -27,15 +28,15 @@ class DbHelper
         WHERE tr.ts BETWEEN ? AND ? + INTERVAL 1 DAY
         GROUP BY command
         ORDER BY tr.task_id";
-    }
+        }
 
-    /**
-     * returns query for TaskInterface table
-     * @return string
-     */
-    public static function tableTasksSql()
-    {
-        return "CREATE TABLE `tasks` (
+        /**
+         * returns query for TaskInterface table
+         * @return string
+         */
+        public static function tableTasksSql()
+        {
+            return "CREATE TABLE `tasks` (
         `task_id` SMALLINT(6) NOT NULL AUTO_INCREMENT,
         `time` VARCHAR(64) NOT NULL,
         `command` VARCHAR(256) NOT NULL,
@@ -45,15 +46,15 @@ class DbHelper
         `ts_updated` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
         PRIMARY KEY (`task_id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
-    }
+        }
 
-    /**
-     * returns query for TaskRunInterface table
-     * @return string
-     */
-    public static function tableTaskRunsSql()
-    {
-        return "CREATE TABLE `task_runs` (
+        /**
+         * returns query for TaskRunInterface table
+         * @return string
+         */
+        public static function tableTaskRunsSql()
+        {
+            return "CREATE TABLE `task_runs` (
         `task_run_id` INT(11) NOT NULL AUTO_INCREMENT,
         `task_id` SMALLINT(6) NOT NULL,
         `status` ENUM('started','completed','error') DEFAULT NULL,
@@ -63,5 +64,5 @@ class DbHelper
         PRIMARY KEY (`task_run_id`),
         KEY `task_id` (`task_id`), KEY `ts` (`ts`)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
+        }
     }
-}

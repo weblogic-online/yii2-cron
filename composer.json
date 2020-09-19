@@ -1,7 +1,8 @@
 {
-  "name": "rossmann-it/yii2-cron",
+  "name": "weblogic-online/yii2-cron",
   "description": "Flexible cron tasks manager for the Yii2 Framework",
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "type": "yii2-module",
   "keywords": [
     "cron",
@@ -11,7 +12,7 @@
     "Yii2",
     "Yii 2"
   ],
-  "homepage": "https://github.com/Rossmann-IT/yii2-cron",
+  "homepage": "https://github.com/weblogic-online/yii2-cron",
   "license": "MIT",
   "authors": [
     {
@@ -29,21 +30,33 @@
       "email": "Entwicklung_CRM@rossmann.de",
       "homepage": "https://www.rossmann.de",
       "role": "Developer"
+    },
+    {
+      "name": "Waut Van den Abbeele",
+      "email": "waut@weblogiconline.eu",
+      "homepage": "https://www.weblogiconline.eu",
+      "role": "Developer"
     }
   ],
   "require": {
-    "php": ">=5.6.0",
-    "yiisoft/yii2": "^2.0.6",
-    "yiisoft/yii2-bootstrap": "^2.0.5",
-    "mtdowling/cron-expression": "^1.1"
+    "php": ">=7.1.0",
+    "ext-json": "*",
+    "yiisoft/yii2-bootstrap4": "^2.0",
+    "dragonmantank/cron-expression": "^3.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.0"
   },
   "autoload": {
     "psr-4": {
-      "rossmann\\cron\\": "src/",
-      "rossmann\\cron_tests\\": "tests/"
+      "weblogic\\cron\\": "src/",
+      "weblogic\\cron_tests\\": "tests/"
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ]
 }

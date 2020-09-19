@@ -5,8 +5,7 @@ This is a flexible tasks manager designed for MVC-type applications. It's used i
 The purpose of this tool is to provide an easy way to manipulate repetitive tasks. 
 
 [Live Demo of original project by multimate](https://cron.multimate.ru)
-[![Code Climate](https://codeclimate.com/github/Rossmann-IT/yii2-cron/badges/gpa.svg)](https://codeclimate.com/github/Rossmann-IT/yii2-cron)
-[![Test Coverage](https://codeclimate.com/github/Rossmann-IT/yii2-cron/badges/coverage.svg)](https://codeclimate.com/github/Rossmann-IT/yii2-cron/coverage)
+
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
 ## How this works
@@ -31,13 +30,13 @@ Import tasks from current crontab file or add them manually. Active tasks will r
 
 Install package via Composer
 ```
-composer require rossmann-it/yii2-cron
+composer require weblogic/yii2-cron
 ```
 
 ### Requirements
 
-* PHP 5.4 or above
-* [mtdowling/cron-expression](https://github.com/mtdowling/cron-expression)
+* PHP 7.1 or above
+* [dragonmantank/cron-expression](https://github.com/dragonmantank/cron-expression)
 
 ### Configure
 * Create tables if you want to store data in database (use Yii migration)
@@ -51,6 +50,9 @@ composer require rossmann-it/yii2-cron
 ## Screenshots
 
 ![Tasks list](https://cron.multimate.ru/img/Selection_006.png)
+
 ![Report](https://cron.multimate.ru/img/Selection_008.png)
+
 ![Logs](https://cron.multimate.ru/img/Selection_007.png)
+
 ![Import and export](https://cron.multimate.ru/img/Selection_003.png)

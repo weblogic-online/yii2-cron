@@ -1,142 +1,155 @@
 <?php
 
-namespace rossmann\cron\models;
+    namespace weblogic\cron\models;
 
-use rossmann\cron\components\TaskRunInterface;
-use yii\db\ActiveRecord;
-use yii\db\Query;
-
-/**
- * @author mult1mate
- * @author rossmann-it
- * @since 20.12.2015
- *
- * @property int $id
- * @property int $task_id
- * @property string $status
- * @property string $output
- * @property int $execution_time
- * @property string $ts
- */
-class TaskRun extends ActiveRecord implements TaskRunInterface {
-    /**
-     * @return string
-     */
-    public static function tableName() {
-        return '{{%task_runs}}';
-    }
+    use weblogic\cron\components\TaskRunInterface;
+    use yii\db\ActiveRecord;
+    use yii\db\Query;
 
     /**
-     * @param int $taskId
-     * @param int $count
-     * @return array
+     * @property int    $id
+     * @property int    $task_id
+     * @property string $status
+     * @property string $output
+     * @property int    $execution_time
+     * @property string $ts
      */
-    public static function getLastRuns($taskId = null, $count = 100) {
-        $db = (new Query())
-            ->select('task_runs.*, tasks.command')
-            ->from(self::tableName())
-            ->join('LEFT JOIN', 'tasks', 'tasks.id = task_runs.task_id')
-            ->orderBy('task_runs.id desc')
-            ->limit($count);
-        if ($taskId) {
-            $db->where('task_runs.task_id=:task_id', [':task_id' => $taskId]);
+    class TaskRun extends ActiveRecord implements TaskRunInterface
+    {
+        /**
+         * @return string
+         */
+        public static function tableName()
+        {
+            return '{{%task_runs}}';
         }
 
-        return $db->all();
-    }
+        /**
+         * @param int $taskId
+         * @param int $count
+         *
+         * @return TaskRun[]
+         */
+        public static function getLastRuns($taskId = null, $count = 100)
+        {
+            $db = (new Query())
+                ->select('task_runs.*, tasks.command')
+                ->from(self::tableName())
+                ->join('LEFT JOIN', 'tasks', 'tasks.id = task_runs.task_id')
+                ->orderBy('task_runs.id desc')
+                ->limit($count);
+            if ($taskId) {
+                $db->where('task_runs.task_id=:task_id', [':task_id' => $taskId]);
+            }
 
-    /**
-     * @param int $taskId
-     * @return array|TaskRun
-     */
-    public static function getLast($taskId) {
-        $last = self::find()
-            ->where('task_id = :task_id', [':task_id' => $taskId])
-            ->orderBy('id DESC')->one();
-        return $last;
-    }
+            return $db->all();
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function saveTaskRun() {
-        return $this->save();
-    }
+        /**
+         * @param int $taskId
+         *
+         * @return array|TaskRun
+         */
+        public static function getLast($taskId)
+        {
+            return self::find()
+                ->where('task_id = :task_id', [':task_id' => $taskId])
+                ->orderBy('id DESC')->one();
+        }
 
-    /**
-     * @return int
-     */
-    public function getId() {
-        return $this->id;
-    }
+        /**
+         * @inheritdoc
+         */
+        public function saveTaskRun() : bool
+        {
+            return $this->save();
+        }
 
-    /**
-     * @return int
-     */
-    public function getTaskId() {
-        return $this->task_id;
-    }
+        /**
+         * @return int
+         */
+        public function getId() : int
+        {
+            return $this->id;
+        }
 
-    /**
-     * @param int $taskId
-     */
-    public function setTaskId($taskId) {
-        $this->task_id = $taskId;
-    }
+        /**
+         * @return int
+         */
+        public function getTaskId() : int
+        {
+            return $this->task_id;
+        }
 
-    /**
-     * @return string
-     */
-    public function getStatus() {
-        return $this->status;
-    }
+        /**
+         * @param int $taskId
+         */
+        public function setTaskId($taskId)
+        {
+            $this->task_id = $taskId;
+        }
 
-    /**
-     * @param string $status
-     */
-    public function setStatus($status) {
-        $this->status = $status;
-    }
+        /**
+         * @return string
+         */
+        public function getStatus() : string
+        {
+            return $this->status;
+        }
 
-    /**
-     * @return int
-     */
-    public function getExecutionTime() {
-        return $this->execution_time;
-    }
+        /**
+         * @param string $status
+         */
+        public function setStatus($status)
+        {
+            $this->status = $status;
+        }
 
-    /**
-     * @param int $executionTime
-     */
-    public function setExecutionTime($executionTime) {
-        $this->execution_time = $executionTime;
-    }
+        /**
+         * @return int
+         */
+        public function getExecutionTime() : int
+        {
+            return $this->execution_time;
+        }
 
-    /**
-     * @return string
-     */
-    public function getTs() {
-        return $this->ts;
-    }
+        /**
+         * @param int $executionTime
+         */
+        public function setExecutionTime($executionTime)
+        {
+            $this->execution_time = $executionTime;
+        }
 
-    /**
-     * @param string $timestamp
-     */
-    public function setTs($timestamp) {
-        $this->ts = $timestamp;
-    }
+        /**
+         * @return string
+         */
+        public function getTs() : string
+        {
+            return $this->ts;
+        }
 
-    /**
-     * @return string
-     */
-    public function getOutput() {
-        return $this->output;
-    }
+        /**
+         * @param string $timestamp
+         */
+        public function setTs($timestamp)
+        {
+            $this->ts = $timestamp;
+        }
 
-    /**
-     * @param string $output
-     */
-    public function setOutput($output) {
-        $this->output = $output;
+        /**
+         * @return string
+         */
+        public function getOutput() : string
+        {
+            return $this->output;
+        }
+
+        /**
+         * @param string $output
+         */
+        public function setOutput($output)
+        {
+            $this->output = $output;
+        }
     }
-}

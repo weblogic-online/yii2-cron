@@ -1,59 +1,57 @@
 <?php
-/**
- * @author mult1mate
- * @since 21.12.2015
- * @var array $tasks
- * @var array $methods
- * @var ActiveDataProvider $dataProvider
- */
+    /**
+     * @var array $tasks
+     * @var array $methods
+     * @var ActiveDataProvider $dataProvider
+     */
 
-use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
-use yii\helpers\Url;
-use rossmann\cron\components\TaskInterface;
-use common\widgets\GridView;
+    use yii\data\ActiveDataProvider;
+    use yii\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+    use weblogic\cron\components\TaskInterface;
 
-$this->title = Yii::t('cron', 'Task list');
-$this->params['breadcrumbs'][] = ['label' => 'Task Manager', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+    $this->title = Yii::t('cron', 'Task list');
+    $this->params['breadcrumbs'][] = ['label' => 'Task Manager', 'url' => ['index']];
+    $this->params['breadcrumbs'][] = $this->title;
 
-echo $this->render('tasks_template');
+    echo $this->render('tasks_template');
 ?>
 <div class="cron-table">
     <?php
-    echo GridView::widget([
-        'dataProvider' => $dataProvider,
-        'class' => 'cron-table',
-        'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn', 'cssClass' => 'task_checkbox'],
-            'id',
-            'time',
-            'command',
-            [
-                'attribute' => 'status',
-                'contentOptions' => function ($dataProvider) {
-                    return (TaskInterface::TASK_STATUS_ACTIVE == $dataProvider->status) ? [] : ['class' => 'text-danger'];
-                }
+        echo GridView::widget([
+            'dataProvider' => $dataProvider,
+            'class' => 'cron-table',
+            'columns' => [
+                ['class' => 'yii\grid\CheckboxColumn', 'cssClass' => 'task_checkbox'],
+                'id',
+                'time',
+                'command',
+                [
+                    'attribute' => 'status',
+                    'contentOptions' => function ($dataProvider) {
+                        return (TaskInterface::TASK_STATUS_ACTIVE == $dataProvider->status) ? [] : ['class' => 'text-danger'];
+                    }
+                ],
+                'locked',
+                'comments',
+                [
+                    'attribute' => 'ts',
+                    'value' => function ($model) {
+                        return Yii::$app->formatter->asDatetime($model->ts);
+                    },
+                    'format' => 'raw'
+                ],
+                [
+                    'attribute' => 'ts_updated',
+                    'value' => function ($model) {
+                        return Yii::$app->formatter->asDatetime($model->ts_updated);
+                    },
+                    'format' => 'raw'
+                ],
+                ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['style' => 'width:45px'], 'template' => '{update}{show-log}{run}'],
             ],
-            'locked',
-            'comments',
-            [
-                'attribute' => 'ts',
-                'value' => function ($model) {
-                    return Yii::$app->formatter->asDatetime($model->ts);
-                },
-                'format' => 'raw'
-            ],
-            [
-                'attribute' => 'ts_updated',
-                'value' => function ($model) {
-                    return Yii::$app->formatter->asDatetime($model->ts_updated);
-                },
-                'format' => 'raw'
-            ],
-            ['class' => 'yii\grid\ActionColumn', 'headerOptions' => ['style' => 'width:45px'], 'template' => '{update}{show-log}{run}'],
-        ],
-    ]);
+        ]);
     ?>
 </div>
 <br/>

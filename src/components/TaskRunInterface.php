@@ -1,76 +1,75 @@
 <?php
-namespace rossmann\cron\components;
 
-/**
- * Interface TaskRunInterface
- * Common interface to handle task runs
- * @author  mult1mate
- * @since 20.12.2015
- */
-interface TaskRunInterface
-{
-    const RUN_STATUS_STARTED   = 'started';
-    const RUN_STATUS_COMPLETED = 'completed';
-    const RUN_STATUS_ERROR     = 'error';
+    namespace weblogic\cron\components;
 
     /**
-     * Saves the task run
-     * @return mixed
+     * Interface TaskRunInterface
+     * Common interface to handle task runs
      */
-    public function saveTaskRun();
+    interface TaskRunInterface
+    {
+        const RUN_STATUS_STARTED = 'started';
+        const RUN_STATUS_COMPLETED = 'completed';
+        const RUN_STATUS_ERROR = 'error';
 
-    /**
-     * @return int
-     */
-    public function getId();
+        /**
+         * Saves the task run
+         * @return mixed
+         */
+        public function saveTaskRun();
 
-    /**
-     * @return int
-     */
-    public function getTaskId();
+        /**
+         * @return int
+         */
+        public function getId();
 
-    /**
-     * @param int $taskId
-     */
-    public function setTaskId($taskId);
+        /**
+         * @return int
+         */
+        public function getTaskId();
 
-    /**
-     * @return string
-     */
-    public function getStatus();
+        /**
+         * @param int $taskId
+         */
+        public function setTaskId($taskId);
 
-    /**
-     * @param string $status
-     */
-    public function setStatus($status);
+        /**
+         * @return string
+         */
+        public function getStatus();
 
-    /**
-     * @return string
-     */
-    public function getExecutionTime();
+        /**
+         * @param string $status
+         */
+        public function setStatus($status);
 
-    /**
-     * @param string $executionTime
-     */
-    public function setExecutionTime($executionTime);
+        /**
+         * @return string
+         */
+        public function getExecutionTime();
 
-    /**
-     * @return string
-     */
-    public function getTs();
+        /**
+         * @param string $executionTime
+         */
+        public function setExecutionTime($executionTime);
 
-    /**
-     * @param string $timestamp
-     */
-    public function setTs($timestamp);
+        /**
+         * @return string
+         */
+        public function getTs();
 
-    /**
-     * @return string
-     */
-    public function getOutput();
+        /**
+         * @param string $timestamp
+         */
+        public function setTs($timestamp);
 
-    /**
-     * @param string $output
-     */
-    public function setOutput($output);
-}
+        /**
+         * @return string
+         */
+        public function getOutput();
+
+        /**
+         * @param string $output
+         */
+        public function setOutput($output);
+    }

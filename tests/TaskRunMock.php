@@ -1,7 +1,7 @@
 <?php
-namespace rossmann\cron_tests;
+namespace weblogic\cron_tests;
 
-use rossmann\cron\components\TaskRunInterface;
+use weblogic\cron\components\TaskRunInterface;
 
 /**
  * @author mult1mate

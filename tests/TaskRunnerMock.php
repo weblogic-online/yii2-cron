@@ -1,7 +1,7 @@
 <?php
-namespace rossmann\cron_tests;
+namespace weblogic\cron_tests;
 
-use rossmann\cron\components\TaskRunner;
+use weblogic\cron\components\TaskRunner;
 
 class TaskRunnerMock extends TaskRunner
 {

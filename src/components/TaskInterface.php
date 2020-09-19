@@ -1,142 +1,140 @@
 <?php
-namespace rossmann\cron\components;
 
-/**
- * Interface TaskInterface
- * Common interface to handle tasks
- * @author  mult1mate
- * @author  rossmann-it
- * @since 20.12.2015
- */
-interface TaskInterface
-{
-    const TASK_STATUS_ACTIVE   = 'active';
-    const TASK_STATUS_INACTIVE = 'inactive';
-    const TASK_STATUS_DELETED  = 'deleted';
+    namespace weblogic\cron\components;
 
     /**
-     * Returns tasks with given id
-     *
-     * @param int $taskId
-     *
-     * @return TaskInterface
+     * Interface TaskInterface
+     * Common interface to handle tasks
      */
-    public static function taskGet($taskId);
+    interface TaskInterface
+    {
+        const TASK_STATUS_ACTIVE = 'active';
+        const TASK_STATUS_INACTIVE = 'inactive';
+        const TASK_STATUS_DELETED = 'deleted';
 
-    /**
-     * Returns array of all tasks
-     * @return array
-     */
-    public static function getAll();
+        /**
+         * Returns tasks with given id
+         *
+         * @param int $taskId
+         *
+         * @return TaskInterface
+         */
+        public static function taskGet($taskId);
 
-    /**
-     * Creates new task object and returns it
-     * @return TaskInterface
-     */
-    public static function createNew();
+        /**
+         * Returns array of all tasks
+         * @return array
+         */
+        public static function getAll();
 
-    /**
-     * Deletes the task
-     * @return mixed
-     */
-    public function taskDelete();
+        /**
+         * Creates new task object and returns it
+         * @return TaskInterface
+         */
+        public static function createNew();
 
-    /**
-     * Saves the task
-     * @return mixed
-     */
-    public function taskSave();
+        /**
+         * Deletes the task
+         * @return mixed
+         */
+        public function taskDelete();
 
-    /**
-     * Creates new task run object for current task and returns it
-     * @return TaskRunInterface
-     */
-    public function createTaskRun();
+        /**
+         * Saves the task
+         * @return mixed
+         */
+        public function taskSave();
 
-    /**
-     * @return int
-     */
-    public function getId();
+        /**
+         * Creates new task run object for current task and returns it
+         * @return TaskRunInterface
+         */
+        public function createTaskRun();
 
-    /**
-     * @return string
-     */
-    public function getTime();
+        /**
+         * @return int
+         */
+        public function getId();
 
-    /**
-     * @param string $time
-     */
-    public function setTime($time);
+        /**
+         * @return string
+         */
+        public function getTime();
 
-    /**
-     * @return string
-     */
-    public function getStatus();
+        /**
+         * @param string $time
+         */
+        public function setTime($time);
 
-    /**
-     * @param string $status
-     */
-    public function setStatus($status);
+        /**
+         * @return string
+         */
+        public function getStatus();
 
-    /**
-     * @return string
-     */
-    public function getComment();
+        /**
+         * @param string $status
+         */
+        public function setStatus($status);
 
-    /**
-     * @param string $comment
-     */
-    public function setComment($comment);
+        /**
+         * @return string
+         */
+        public function getComment();
 
-    /**
-     * @return string
-     */
-    public function getCommand();
+        /**
+         * @param string $comment
+         */
+        public function setComment($comment);
 
-    /**
-     * @param string $command
-     */
-    public function setCommand($command);
+        /**
+         * @return string
+         */
+        public function getCommand();
 
-    /**
-     * @return string
-     */
-    public function getTs();
+        /**
+         * @param string $command
+         */
+        public function setCommand($command);
 
-    /**
-     * @param string $timestamp
-     */
-    public function setTs($timestamp);
+        /**
+         * @return string
+         */
+        public function getTs();
 
-    /**
-     * @return string
-     */
-    public function getTsUpdated();
+        /**
+         * @param string $timestamp
+         */
+        public function setTs($timestamp);
 
-    /**
-     * @param string $timestamp
-     */
-    public function setTsUpdated($timestamp);
+        /**
+         * @return string
+         */
+        public function getTsUpdated();
 
-    /**
-     * @return bool
-     */
-    public function isLocked();
+        /**
+         * @param string $timestamp
+         */
+        public function setTsUpdated($timestamp);
 
-    /**
-     * sets the locked flag to 0 in the database
-     */
-    public function releaseLock();
+        /**
+         * @return bool
+         */
+        public function isLocked();
 
-    /**
-     * @param int|bool $locked
-     */
-    public function setLocked($locked);
+        /**
+         * sets the locked flag to 0 in the database
+         */
+        public function releaseLock();
 
-    /**
-     * @return bool
-     * @throws \Exception
-     */
-    public function acquireLock();
+        /**
+         * @param int|bool $locked
+         */
+        public function setLocked($locked);
 
-}
+        /**
+         * @return bool
+         * @throws \Exception
+         */
+        public function acquireLock();
+
+    }

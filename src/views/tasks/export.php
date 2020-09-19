@@ -1,8 +1,4 @@
 <?php
-/**
- * @author mult1mate
- * @since 31.12.2015
- */
 $this->title = Yii::t('cron', 'Import/Export');
 $this->params['breadcrumbs'][] = ['label' => 'Task Manager', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

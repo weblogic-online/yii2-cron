@@ -1,6 +1,6 @@
 <?php
 /**
- * Message translations for \rossmann-it\yii2-cron.
+ * Message translations for \weblogic-online\yii2-cron.
  *
  * It contains the localizable messages extracted from source code.
  * You may modify this file by translating the extracted messages.

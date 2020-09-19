@@ -1,17 +1,14 @@
 <?php
-/**
- * @author mult1mate
- * @since 06.02.2016
- */
-namespace rossmann\cron\assets;
 
-use yii\web\AssetBundle;
+    namespace weblogic\cron\assets;
 
-class TasksAsset extends AssetBundle
-{
-    public $sourcePath = '@vendor/rossmann-it/yii2-cron/src/assets';
+    use yii\web\AssetBundle;
 
-    public $js = [
-        'manager_actions.js',
-    ];
-}
+    class TasksAsset extends AssetBundle
+    {
+        public $sourcePath = '@vendor/weblogic-online/yii2-cron/src/assets';
+
+        public $js = [
+            'manager_actions.js',
+        ];
+    }

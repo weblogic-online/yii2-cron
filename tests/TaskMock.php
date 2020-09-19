@@ -1,7 +1,7 @@
 <?php
-namespace rossmann\cron_tests;
+namespace weblogic\cron_tests;
 
-use rossmann\cron\components\TaskInterface;
+use weblogic\cron\components\TaskInterface;
 
 /**
  * @author mult1mate
@@ -47,7 +47,7 @@ class TaskMock implements TaskInterface
     }
 
     /**
-     * @return \rossmann\cron\components\TaskRunInterface
+     * @return \weblogic\cron\components\TaskRunInterface
      */
     public function createTaskRun()
     {

@@ -4,7 +4,7 @@
  * @since 07.02.2016
  */
 
-namespace rossmann\cron_tests;
+namespace weblogic\cron_tests;
 
 class ActionMock
 {
