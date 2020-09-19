@@ -1,6 +1,6 @@
 <?php
 
-    namespace weblogic\migrations;
+    namespace weblogic\cron\migrations;
 
     use yii\db\Migration;
 
