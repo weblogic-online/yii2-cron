@@ -3,7 +3,7 @@
   "description": "Flexible cron tasks manager for the Yii2 Framework",
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "type": "yii2-extension",
+  "type": "yii2-module",
   "keywords": [
     "cron",
     "crontab",
