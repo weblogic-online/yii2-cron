@@ -49,8 +49,14 @@
   },
   "autoload": {
     "psr-4": {
-      "weblogic\\cron\\": "src/",
-      "weblogic\\cron_tests\\": "tests/"
+      "weblogic\\cron\\": "./src",
+      "weblogic\\cron_tests\\": "./tests"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "weblogic\\cron\\": "./src",
+      "weblogic\\cron_tests\\": "./tests"
     }
   },
   "repositories": [
