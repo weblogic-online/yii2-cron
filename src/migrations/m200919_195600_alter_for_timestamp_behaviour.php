@@ -1,7 +1,5 @@
 <?php
 
-    namespace weblogic\cron\migrations;
-
     use yii\db\Migration;
 
     /**

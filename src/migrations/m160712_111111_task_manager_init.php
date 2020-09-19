@@ -1,7 +1,5 @@
 <?php
 
-    namespace weblogic\cron\migrations;
-
     use yii\db\Migration;
 
     class m160712_111111_task_manager_init extends Migration
