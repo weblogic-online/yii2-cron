@@ -3,12 +3,12 @@
     namespace weblogic\cron;
 
     use Yii;
-    use yii\base\Module;
+    use yii\base\Module as BaseModule;
 
     /**
      * Class CronModule
      */
-    class CronModule extends Module
+    class Module extends BaseModule
     {
         const DIALECT_MYSQL = 'MySQL';
         const DIALECT_OCI8 = 'Oracle';

@@ -3,7 +3,6 @@
     namespace weblogic\cron\controllers;
 
     use weblogic\cron\components\TaskManagerException;
-    use weblogic\cron\CronModule;
     use weblogic\cron\models\Task;
     use weblogic\cron\models\TaskRun;
     use weblogic\cron\assets\TasksAsset;
@@ -11,6 +10,7 @@
     use weblogic\cron\components\TaskLoader;
     use weblogic\cron\components\TaskManager;
     use weblogic\cron\components\TaskRunner;
+    use weblogic\cron\Module;
     use Yii;
     use yii\data\ActiveDataProvider;
     use yii\helpers\Url;
@@ -26,7 +26,7 @@
 
         /**
          * @param string     $id
-         * @param CronModule $module
+         * @param Module $module
          * @param array      $config
          */
         public function __construct($id, $module, $config = [])

@@ -10,7 +10,7 @@
     use weblogic\cron\components\TaskInterface;
     use weblogic\cron\components\TaskRunInterface;
     use weblogic\cron\components\validation\CommandValidator;
-    use weblogic\cron\CronModule;
+    use weblogic\cron\Module;
     use Yii;
     use yii\behaviors\TimestampBehavior;
     use yii\db\ActiveRecord;
@@ -125,7 +125,7 @@
          * @return array
          * @throws Exception
          */
-        public static function getReport($dateBegin, $dateEnd, $sqlDialect = CronModule::DIALECT_MYSQL)
+        public static function getReport($dateBegin, $dateEnd, $sqlDialect = Module::DIALECT_MYSQL)
         {
             $sql = "SELECT t.command, t.id,
         SUM(CASE WHEN tr.status = 'started' THEN 1 ELSE 0 END) AS started,
@@ -154,13 +154,13 @@
          *
          * @return string
          */
-        protected static function getDateConstraint($sqlDialect = CronModule::DIALECT_MYSQL)
+        protected static function getDateConstraint($sqlDialect = Module::DIALECT_MYSQL)
         {
             switch ($sqlDialect) {
-                case CronModule::DIALECT_MYSQL:
+                case Module::DIALECT_MYSQL:
                     $constraint = 'tr.ts BETWEEN :date_begin AND :date_end + INTERVAL 1 DAY';
                     break;
-                case CronModule::DIALECT_OCI8:
+                case Module::DIALECT_OCI8:
                     $constraint = "tr.ts BETWEEN TO_DATE(:date_begin, 'YYYY-MM-DD HH24:MI:SS') 
                     AND TO_DATE(:date_end, 'YYYY-MM-DD HH24:MI:SS') + 1";
                     break;
